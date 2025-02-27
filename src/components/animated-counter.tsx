@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useState, useRef } from "react"
 import { useInView } from "framer-motion"
 
@@ -18,14 +17,13 @@ export function AnimatedCounter({ value, duration = 2000 }: AnimatedCounterProps
     if (isInView && !hasAnimated) {
       setHasAnimated(true)
 
-      let startTime: number
+      let startTime: number | null = null
       let animationFrameId: number
 
       const animate = (timestamp: number) => {
-        if (!startTime) startTime = timestamp
+        if (startTime === null) startTime = timestamp
         const progress = timestamp - startTime
         const percentage = Math.min(progress / duration, 1)
-
         setCount(Math.floor(percentage * value))
 
         if (percentage < 1) {
@@ -39,8 +37,7 @@ export function AnimatedCounter({ value, duration = 2000 }: AnimatedCounterProps
         cancelAnimationFrame(animationFrameId)
       }
     }
-  }, [isInView, value, duration, hasAnimated])
+  }, [isInView, hasAnimated, duration, value])
 
   return <div ref={ref}>{count}</div>
 }
-

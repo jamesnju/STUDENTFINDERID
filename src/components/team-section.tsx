@@ -80,7 +80,7 @@ export function TeamSection() {
                   <img
                     src={member.image || "/placeholder.svg"}
                     alt={member.name}
-                    className="w-full h-full object-fill transition-transform duration-300 hover:scale-105"
+                    className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
                   />
                 </div>
                 <CardContent className="p-6">

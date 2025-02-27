@@ -8,27 +8,26 @@ import { HeroSection } from "@/components/hero-section"
 import { TeamSection } from "@/components/team-section"
 import Image from "next/image"
 
-
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-bgprimary">
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="flex min-h-screen flex-col bg-bgprimary bg-gradient-to-r from-blue-100 to-purple-100">
+      <header className="sticky top-0 z-40 border-b bg-background/95 bg-gradient-to-r from-blue-500 to-purple-500 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between py-4">
-        <Link href="/" className="flex items-center space-x-2 p-4">
-          <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
-          {/* <span className="text-2xl font-bold text-primary">LostFound</span> */}
-        </Link>
+          <Link href="/" className="flex items-center space-x-2 p-4">
+            <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
+            {/* <span className="text-2xl font-bold text-primary">LostFound</span> */}
+          </Link>
           <nav className="hidden md:flex gap-6 bg-bgprimary">
-            <Link href="#how-it-works" className="text-sm font-medium hover:text-primary">
+            <Link href="#how-it-works" className="text-sm font-medium hover:text-primary hover:underline">
               How It Works
             </Link>
-            <Link href="#services" className="text-sm font-medium hover:text-primary">
+            <Link href="#services" className="text-sm font-medium hover:text-primary hover:underline">
               Services
             </Link>
-            <Link href="#impact" className="text-sm font-medium hover:text-primary">
+            <Link href="#impact" className="text-sm font-medium hover:text-primary hover:underline">
               Our Impact
             </Link>
-            <Link href="#team" className="text-sm font-medium hover:text-primary">
+            <Link href="#team" className="text-sm font-medium hover:text-primary hover:underline">
               Team
             </Link>
           </nav>
@@ -49,50 +48,50 @@ export default function Home() {
         <section id="how-it-works" className="py-20 bg-muted/50">
           <div className="container">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">How It Works</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold tracking-tight mb-4 text-blue-800">How It Works</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-blue-600">
                 Our platform makes it easy to report and recover lost items through a simple process
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="border-none shadow-md">
+              <Card className="border-none shadow-lg hover:shadow-2xl">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                     <Search className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle>Report</CardTitle>
+                  <CardTitle className="text-blue-700">Report</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
+                  <CardDescription className="text-blue-600">
                     Quickly report your lost ID or item with details and optional photos to help with identification.
                   </CardDescription>
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-md">
+              <Card className="border-none shadow-lg hover:shadow-2xl">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                     <Shield className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle>Verify</CardTitle>
+                  <CardTitle className="text-blue-700">Verify</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
+                  <CardDescription className="text-blue-600">
                     Our system matches lost and found reports, and verifies ownership through secure verification.
                   </CardDescription>
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-md">
+              <Card className="border-none shadow-lg hover:shadow-2xl">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                     <CheckCircle className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle>Recover</CardTitle>
+                  <CardTitle className="text-blue-700">Recover</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
+                  <CardDescription className="text-blue-600">
                     Once verified, arrange safe return of your items through our secure handover process.
                   </CardDescription>
                 </CardContent>
@@ -104,8 +103,8 @@ export default function Home() {
         <section id="services" className="py-20">
           <div className="container">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Our Services</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold tracking-tight mb-4 text-purple-800">Our Services</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-purple-600">
                 We offer comprehensive solutions for lost and found items
               </p>
             </div>
@@ -114,7 +113,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="impact" className="py-20 bg-primary text-primary-foreground">
+        <section id="impact" className="py-20 bg-gradient-to-br from-purple-500 to-pink-600 text-primary-foreground">
           <div className="container">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight mb-4">Our Impact</h2>
@@ -125,7 +124,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="p-6">
-                <div className="text-5xl font-bold mb-4">
+                <div className="text-5xl font-bold mb-4 text-yellow-300">
                   <AnimatedCounter value={1500} />+
                 </div>
                 <h3 className="text-xl font-medium mb-2">Items Recovered</h3>
@@ -135,7 +134,7 @@ export default function Home() {
               </div>
 
               <div className="p-6">
-                <div className="text-5xl font-bold mb-4">
+                <div className="text-5xl font-bold mb-4 text-yellow-300">
                   <AnimatedCounter value={25000} />+
                 </div>
                 <h3 className="text-xl font-medium mb-2">Active Users</h3>
@@ -145,7 +144,7 @@ export default function Home() {
               </div>
 
               <div className="p-6">
-                <div className="text-5xl font-bold mb-4">
+                <div className="text-5xl font-bold mb-4 text-yellow-300">
                   <AnimatedCounter value={98} />%
                 </div>
                 <h3 className="text-xl font-medium mb-2">Success Rate</h3>
@@ -158,21 +157,21 @@ export default function Home() {
         <section id="testimonials" className="py-20">
           <div className="container">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">What Our Users Say</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold tracking-tight mb-4 text-green-800">What Our Users Say</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-green-600">
                 Real stories from people who have used our platform
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card>
+              <Card className="shadow-md hover:shadow-xl">
                 <CardHeader>
                   <div className="flex items-center gap-4">
                     <div className="rounded-full bg-muted w-10 h-10 flex items-center justify-center">
-                      <UserRound className="h-5 w-5" />
+                      <UserRound className="h-5 w-5 text-green-800" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg">Sarah Johnson</CardTitle>
+                      <CardTitle className="text-lg text-green-900">Sarah Johnson</CardTitle>
                       <CardDescription>Student</CardDescription>
                     </div>
                   </div>
@@ -185,14 +184,14 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md hover:shadow-xl">
                 <CardHeader>
                   <div className="flex items-center gap-4">
                     <div className="rounded-full bg-muted w-10 h-10 flex items-center justify-center">
-                      <UserRound className="h-5 w-5" />
+                      <UserRound className="h-5 w-5 text-green-800" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg">Michael Chen</CardTitle>
+                      <CardTitle className="text-lg text-green-900">Michael Chen</CardTitle>
                       <CardDescription>Business Professional</CardDescription>
                     </div>
                   </div>
@@ -205,14 +204,14 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md hover:shadow-xl">
                 <CardHeader>
                   <div className="flex items-center gap-4">
                     <div className="rounded-full bg-muted w-10 h-10 flex items-center justify-center">
-                      <UserRound className="h-5 w-5" />
+                      <UserRound className="h-5 w-5 text-green-800" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg">Priya Patel</CardTitle>
+                      <CardTitle className="text-lg text-green-900">Priya Patel</CardTitle>
                       <CardDescription>Teacher</CardDescription>
                     </div>
                   </div>
@@ -231,13 +230,13 @@ export default function Home() {
         <TeamSection />
       </main>
 
-      <footer className="border-t text-white font-bold bg-[#2C3E50]">
+      <footer className="border-t text-white font-bold bg-gradient-to-r from-[#2C3E50] to-[#34495E]">
         <div className="container py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 font-bold text-xl mb-4">
-              <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
-              <span>FindMyID</span>
+                <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
+                <span>FindMyID</span>
               </div>
               <p className=" text-white text-sm">
                 Helping people recover lost items and IDs through our secure platform.
@@ -365,4 +364,3 @@ export default function Home() {
     </div>
   )
 }
-
