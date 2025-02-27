@@ -22,7 +22,7 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             Lost Something Important?
-            <span className="text-primary block mt-2">We'll Help You Find It</span>
+            <span className="text-primary block mt-2">We&apos;ll Help You Find It</span>
           </motion.h1>
           <motion.p
             className="text-xl text-muted-foreground mb-8"

@@ -63,7 +63,7 @@ export function TeamSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight mb-4">Meet Our Team</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            The passionate people behind our mission to help you find what you've lost
+            The passionate people behind our mission to help you find what you&apos;ve lost
           </p>
         </div>
 

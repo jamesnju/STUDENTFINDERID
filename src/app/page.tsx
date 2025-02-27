@@ -117,7 +117,7 @@ export default function Home() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight mb-4">Our Impact</h2>
               <p className="text-primary-foreground/80 max-w-2xl mx-auto">
-                Making a difference in people's lives through our lost and found platform
+                Making a difference in people&apos;s lives through our lost and found platform
               </p>
             </div>
 
@@ -177,8 +177,8 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    "I lost my student ID during finals week and was panicking. Within 24 hours of reporting it on
-                    FindMyID, someone had found it and I got it back. Lifesaver!"
+                  &apos;I lost my student ID during finals week and was panicking. Within 24 hours of reporting it on
+                    FindMyID, someone had found it and I got it back. Lifesaver&apos;
                   </p>
                 </CardContent>
               </Card>
@@ -197,8 +197,8 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    "Lost my wallet with all my cards and ID. The verification system made sure it was returned safely
-                    to me without any issues. Highly recommend!"
+                  &apos;Lost my wallet with all my cards and ID. The verification system made sure it was returned safely
+                    to me without any issues. Highly recommend&apos;
                   </p>
                 </CardContent>
               </Card>
@@ -217,8 +217,8 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    "Found someone's driver's license and used FindMyID to report it. The process was so simple, and I
-                    felt good knowing I helped someone get their ID back safely."
+                  &apos;Found someone&apos;s driver&apos;s license and used FindMyID to report it. The process was so simple, and I
+                    felt good knowing I helped someone get their ID back safely.&apos;
                   </p>
                 </CardContent>
               </Card>
