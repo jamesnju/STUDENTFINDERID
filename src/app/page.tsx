@@ -6,16 +6,18 @@ import { AnimatedCounter } from "@/components/animated-counter"
 import { AnimatedServices } from "@/components/animated-services"
 import { HeroSection } from "@/components/hero-section"
 import { TeamSection } from "@/components/team-section"
+import Image from "next/image"
+
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col ">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between py-4">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <Shield className="h-6 w-6" />
-            <span>FindMyID</span>
-          </Link>
+        <Link href="/" className="flex items-center space-x-2 p-4">
+          <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
+          {/* <span className="text-2xl font-bold text-primary">LostFound</span> */}
+        </Link>
           <nav className="hidden md:flex gap-6">
             <Link href="#how-it-works" className="text-sm font-medium hover:text-primary">
               How It Works
@@ -234,8 +236,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 font-bold text-xl mb-4">
-                <Shield className="h-6 w-6" />
-                <span>FindMyID</span>
+              <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
+              <span>FindMyID</span>
               </div>
               <p className="text-muted-foreground text-sm">
                 Helping people recover lost items and IDs through our secure platform.

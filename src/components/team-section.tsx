@@ -10,25 +10,25 @@ const teamMembers = [
     name: "Dr. Sarah Johnson",
     role: "Founder & CEO",
     bio: "Former security expert with a passion for helping people recover lost items.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/g1.jpg?height=300&width=300",
   },
   {
     name: "Michael Chen",
     role: "CTO",
     bio: "Tech innovator with expertise in secure verification systems and digital identity.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/b1.jpg?height=300&width=300",
   },
   {
     name: "Priya Patel",
     role: "Head of Operations",
     bio: "Operations specialist focused on creating efficient recovery processes.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/b2.jpg?height=300&width=300",
   },
   {
     name: "James Wilson",
     role: "Head of Community",
     bio: "Building and nurturing our community of users across the country.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/b3.jpg?height=300&width=300",
   },
 ]
 

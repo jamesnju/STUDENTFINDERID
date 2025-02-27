@@ -15,7 +15,14 @@ module.exports = {
         'eb-garamond': ['EB Garamond', 'serif'],
         'roboto-mono': ['Roboto Mono', 'monospace'],
       },
+      primary: '#2C3E50', // Dark blue
+      bgsecondary: '#3498DB', // Sky blue
+      gray: '#ECF0F1', // Light gray
+      white: '#FFFFFF',
+      error: '#E74C3C', // Red for errors
+      success: '#27AE60', // Green for success
       colors: {
+       
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
