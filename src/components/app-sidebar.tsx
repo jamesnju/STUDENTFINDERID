@@ -46,7 +46,7 @@ export function AppSidebar({
   ]
 
   return (
-    <Sidebar>
+    <Sidebar className="bg-[#34495E]">
       <SidebarHeader className="border-b border-sidebar-border p-4">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
@@ -59,7 +59,7 @@ export function AppSidebar({
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent className="p-2">
+      <SidebarContent className="p-2 ">
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.name}>

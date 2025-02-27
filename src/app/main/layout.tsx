@@ -21,8 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SidebarProvider>
-          <div className="flex min-h-screen w-screen">
+        <SidebarProvider >
+          <div className="flex min-h-screen w-screen ">
             <AppSidebar
               user={{
                 name: "John Doe",

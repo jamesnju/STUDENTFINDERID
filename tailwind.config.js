@@ -15,14 +15,19 @@ module.exports = {
         'eb-garamond': ['EB Garamond', 'serif'],
         'roboto-mono': ['Roboto Mono', 'monospace'],
       },
-      primary: '#2C3E50', // Dark blue
-      bgsecondary: '#3498DB', // Sky blue
-      gray: '#ECF0F1', // Light gray
-      white: '#FFFFFF',
-      error: '#E74C3C', // Red for errors
-      success: '#27AE60', // Green for success
+      
       colors: {
-       
+        bgprimary: '#2C3E50', // For navbar, buttons, main headings
+        secondary: '#3498DB', // Highlights, hover effects
+        background: '#F4F6F8', // Page background
+        sidebar: '#34495E', // Sidebar background
+        footer: '#2C3E50', // Footer background
+        textPrimary: '#2C3E50', // Main text
+        textSecondary: '#7F8C8D', // Descriptive text
+        error: '#E74C3C', // Error messages
+        success: '#27AE60', // Success messages
+        white: '#FFFFFF', // Cards, inputs
+        
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

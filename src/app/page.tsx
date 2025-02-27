@@ -11,14 +11,14 @@ import Image from "next/image"
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col ">
+    <div className="flex min-h-screen flex-col bg-bgprimary">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between py-4">
         <Link href="/" className="flex items-center space-x-2 p-4">
           <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
           {/* <span className="text-2xl font-bold text-primary">LostFound</span> */}
         </Link>
-          <nav className="hidden md:flex gap-6">
+          <nav className="hidden md:flex gap-6 bg-bgprimary">
             <Link href="#how-it-works" className="text-sm font-medium hover:text-primary">
               How It Works
             </Link>
@@ -231,7 +231,7 @@ export default function Home() {
         <TeamSection />
       </main>
 
-      <footer className="border-t bg-muted/30">
+      <footer className="border-t text-white font-bold bg-[#2C3E50]">
         <div className="container py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -239,31 +239,31 @@ export default function Home() {
               <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
               <span>FindMyID</span>
               </div>
-              <p className="text-muted-foreground text-sm">
+              <p className=" text-white text-sm">
                 Helping people recover lost items and IDs through our secure platform.
               </p>
             </div>
 
-            <div>
+            <div className="text-white">
               <h3 className="font-medium mb-4">Quick Links</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     Report Lost Item
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     Report Found Item
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     View Reported Items
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     How It Works
                   </Link>
                 </li>
@@ -274,22 +274,22 @@ export default function Home() {
               <h3 className="font-medium mb-4">Company</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     Our Team
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     Careers
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     Privacy Policy
                   </Link>
                 </li>
@@ -299,10 +299,10 @@ export default function Home() {
             <div>
               <h3 className="font-medium mb-4">Contact</h3>
               <ul className="space-y-2 text-sm">
-                <li className="text-muted-foreground">Email: contact@findmyid.com</li>
-                <li className="text-muted-foreground">Phone: +1 (555) 123-4567</li>
+                <li className="">Email: contact@findmyid.com</li>
+                <li className="">Phone: +1 (555) 123-4567</li>
                 <li className="flex gap-4 mt-4">
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
@@ -318,7 +318,7 @@ export default function Home() {
                       <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
                     </svg>
                   </Link>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
@@ -334,7 +334,7 @@ export default function Home() {
                       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                     </svg>
                   </Link>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="#" className=" hover:text-foreground">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
@@ -357,7 +357,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
+          <div className="border-t mt-8 pt-8 text-center text-sm ">
             <p>© {new Date().getFullYear()} FindMyID. All rights reserved.</p>
           </div>
         </div>
