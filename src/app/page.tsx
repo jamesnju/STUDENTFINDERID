@@ -49,7 +49,7 @@ export default function Home() {
           <div className="container">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight mb-4 text-blue-800">How It Works</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-blue-600">
+              <p className=" max-w-2xl mx-auto text-blue-600">
                 Our platform makes it easy to report and recover lost ids through a simple process
               </p>
             </div>
@@ -158,7 +158,7 @@ export default function Home() {
           <div className="container">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight mb-4 text-green-800">What Our Users Say</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-green-600">
+              <p className=" max-w-2xl mx-auto text-green-600">
                 Real stories from people who have used our platform
               </p>
             </div>

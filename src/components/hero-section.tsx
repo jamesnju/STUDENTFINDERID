@@ -7,7 +7,7 @@ import Image from "next/image"
 
 export function HeroSection() {
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="relative py-20 md:py-28 overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="container relative z-10">
         <motion.div
           className="max-w-3xl mx-auto text-center mb-12"
@@ -67,9 +67,11 @@ export function HeroSection() {
           transition={{ duration: 0.7, delay: 0.8 }}
         >
           <Image
-            src="/lost.jpg?height=600&width=1200"
+            src="/lost.jpg"
             alt="FindMyID Platform Dashboard"
             className="w-full h-auto"
+            height={600}
+            width={1200}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end justify-center pb-8">
             <Button
@@ -92,6 +94,6 @@ export function HeroSection() {
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-primary/10 rounded-full blur-3xl transform -translate-x-1/4 translate-y-1/4"></div>
       </div>
-    </section>
+    </div>
   )
 }
