@@ -3,6 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
+import Image from "next/image"
 import { useRef } from "react"
 
 const teamMembers = [
@@ -77,7 +78,7 @@ export function TeamSection() {
             <motion.div key={index} variants={itemVariants}>
               <Card className="overflow-hidden border-none shadow-md">
                 <div className="aspect-square overflow-hidden">
-                  <img
+                  <Image
                     src={member.image || "/placeholder.svg"}
                     alt={member.name}
                     className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"

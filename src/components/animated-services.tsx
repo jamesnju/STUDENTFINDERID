@@ -8,21 +8,21 @@ import { useRef } from "react"
 const services = [
   {
     icon: <FileSearch className="h-10 w-10 text-primary" />,
-    title: "Report Lost Items",
+    title: "Report Lost Id",
     description:
-      "Quickly report your lost ID or valuable items with our easy-to-use form. Add photos and detailed descriptions to help with identification.",
+      "Quickly report your lost ID  with our easy-to-use form. Add photos and detailed descriptions to help with identification.",
   },
   {
     icon: <Shield className="h-10 w-10 text-primary" />,
     title: "Prove Ownership",
     description:
-      "Our secure verification system ensures that only the rightful owner can claim lost items through a multi-step verification process.",
+      "Our secure verification system ensures that only the rightful owner can claim lost Id through a multi-step verification process.",
   },
   {
     icon: <CheckCircle className="h-10 w-10 text-primary" />,
     title: "Get It Back",
     description:
-      "Once ownership is verified, we facilitate the safe return of your items through our secure handover process with tracking and confirmation.",
+      "Once ownership is verified, we facilitate the safe return of your id through our secure handover process with tracking and confirmation.",
   },
   {
     icon: <FileSearch className="h-10 w-10 text-primary" />,
@@ -33,7 +33,7 @@ const services = [
   {
     icon: <Shield className="h-10 w-10 text-primary" />,
     title: "Community Network",
-    description: "Join our community of responsible citizens helping each other recover lost items across the country.",
+    description: "Join our community of responsible citizens helping each other recover lost Id across the country.",
   },
 ]
 

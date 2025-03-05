@@ -5,6 +5,7 @@ import { Inter } from "next/font/google"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { MainContent } from "@/components/main-content"
+import NextAuthSessionProvider from "@/components/Session/NextAuthSessionProvider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <NextAuthSessionProvider>
         <SidebarProvider >
           <div className="flex min-h-screen w-screen ">
             <AppSidebar
@@ -34,6 +36,7 @@ export default function RootLayout({
             <MainContent>{children}</MainContent>
           </div>
         </SidebarProvider>
+        </NextAuthSessionProvider>
       </body>
     </html>
   )

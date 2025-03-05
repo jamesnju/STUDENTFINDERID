@@ -13,8 +13,8 @@ export default function Home() {
     <div className="flex min-h-screen flex-col bg-bgprimary bg-gradient-to-r from-blue-100 to-purple-100">
       <header className="sticky top-0 z-40 border-b bg-background/95 bg-gradient-to-r from-blue-500 to-purple-500 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between py-4">
-          <Link href="/" className="flex items-center space-x-2 p-4">
-            <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={60} />
+          <Link href="/" className="flex items-center space-x- ">
+            <Image src="/logo.jpeg" alt="LostFound Logo" width={60} height={40} />
             {/* <span className="text-2xl font-bold text-primary">LostFound</span> */}
           </Link>
           <nav className="hidden md:flex gap-6 bg-bgprimary">
@@ -36,7 +36,7 @@ export default function Home() {
               <Link href="/login">Login</Link>
             </Button>
             <Button size="sm" asChild>
-              <Link href="/login">Register</Link>
+              <Link href="/register">Register</Link>
             </Button>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function Home() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight mb-4 text-blue-800">How It Works</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto text-blue-600">
-                Our platform makes it easy to report and recover lost items through a simple process
+                Our platform makes it easy to report and recover lost ids through a simple process
               </p>
             </div>
 
@@ -64,7 +64,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-blue-600">
-                    Quickly report your lost ID or item with details and optional photos to help with identification.
+                    Quickly report your lost ID with details and optional photos to help with identification.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -92,7 +92,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-blue-600">
-                    Once verified, arrange safe return of your items through our secure handover process.
+                    Once verified, arrange safe return of your id through our secure handover process.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -104,8 +104,8 @@ export default function Home() {
           <div className="container">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight mb-4 text-purple-800">Our Services</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-purple-600">
-                We offer comprehensive solutions for lost and found items
+              <p className=" max-w-2xl mx-auto text-purple-600">
+                We offer comprehensive solutions for lost and found School IDs
               </p>
             </div>
 
@@ -192,7 +192,7 @@ export default function Home() {
                     </div>
                     <div>
                       <CardTitle className="text-lg text-green-900">Michael Chen</CardTitle>
-                      <CardDescription>Business Professional</CardDescription>
+                      <CardDescription>Student at pwani</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -212,13 +212,13 @@ export default function Home() {
                     </div>
                     <div>
                       <CardTitle className="text-lg text-green-900">Priya Patel</CardTitle>
-                      <CardDescription>Teacher</CardDescription>
+                      <CardDescription>Lecturer</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                  &apos;Found someone&apos;s driver&apos;s license and used FindMyID to report it. The process was so simple, and I
+                  &apos;Found someone&apos;s school ID and used FindMyID to report it. The process was so simple, and I
                     felt good knowing I helped someone get their ID back safely.&apos;
                   </p>
                 </CardContent>
@@ -239,7 +239,7 @@ export default function Home() {
                 <span>FindMyID</span>
               </div>
               <p className=" text-white text-sm">
-                Helping people recover lost items and IDs through our secure platform.
+                Helping people recover lost IDs through our secure platform.
               </p>
             </div>
 
@@ -248,17 +248,17 @@ export default function Home() {
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link href="#" className=" hover:text-foreground">
-                    Report Lost Item
+                    Report Lost ID
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="#" className=" hover:text-foreground">
                     Report Found Item
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link href="#" className=" hover:text-foreground">
-                    View Reported Items
+                    View Reported IDs
                   </Link>
                 </li>
                 <li>

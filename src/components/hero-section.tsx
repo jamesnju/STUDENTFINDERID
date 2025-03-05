@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { FileSearch, Upload, List, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export function HeroSection() {
   return (
@@ -41,13 +42,13 @@ export function HeroSection() {
             <Button size="lg" className="gap-2" asChild>
               <Link href="/report-lost">
                 <FileSearch className="h-5 w-5" />
-                Report Lost Item
+                Report Lost Id
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="gap-2" asChild>
               <Link href="/report-found">
                 <Upload className="h-5 w-5" />
-                Report Found Item
+                Report Found Id
               </Link>
             </Button>
             <Button size="lg" variant="secondary" className="gap-2" asChild>
@@ -65,7 +66,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.8 }}
         >
-          <img
+          <Image
             src="/lost.jpg?height=600&width=1200"
             alt="FindMyID Platform Dashboard"
             className="w-full h-auto"
