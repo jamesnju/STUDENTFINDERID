@@ -24,7 +24,7 @@ export const options: NextAuthOptions = {
             credentials?.password as string
           );
       
-          console.log("Fetched User:", response);
+          //console.log("Fetched User:", response);
       
           if (response?.user) {
             return {
@@ -37,7 +37,7 @@ export const options: NextAuthOptions = {
             return null;
           }
         } catch (error) {
-          console.error("Authorization error:", error);
+          //console.error("Authorization error:", error);
           throw new Error("Invalid credentials");
         }
       },
@@ -49,7 +49,7 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("User object in JWT:", user);
+      //console.log("User object in JWT:", user);
 
       if (user) {
         const userWithRole = user as UserWithRole;
@@ -58,7 +58,7 @@ export const options: NextAuthOptions = {
         token.role = userWithRole.role;
         token.name = userWithRole.name;
       }
-      console.log("JWT Token:-----------------", token);
+      //console.log("JWT Token:-----------------", token);
       return token;
     },
     async session({ session, token }) {
@@ -68,7 +68,7 @@ export const options: NextAuthOptions = {
         role: token.role as string,
         name: token.name as string,
       };
-      console.log("Session object:-------------------", session);
+      //console.log("Session object:-------------------", session);
       return session;
     },
   },

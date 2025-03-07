@@ -1,8 +1,14 @@
+import { getReportedFoundId } from '@/actions/ReportedFoundIds';
+import ReportedFoudIds from '@/components/reportedLostId/ReportedFoudIds';
 import React from 'react'
 
-const page = () => {
+const page = async() => {
+  const initialStudents = await getReportedFoundId() ?? [];
+
   return (
-    <div>page</div>
+    <div>
+      <ReportedFoudIds initialStudents={initialStudents}/>
+    </div>
   )
 }
 

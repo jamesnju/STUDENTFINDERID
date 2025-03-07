@@ -28,8 +28,10 @@ import {
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
+import baseUrl from "@/constant/constant";
 import { RevalidatePath } from "@/constant/RevalidateCustomPath";
 import baseImageUrl from "@/constant/uploadImage";
+import { deleteReportedLostId } from "@/actions/ReportedLostIds";
 
 export interface UserData {
   id: number;
@@ -45,7 +47,7 @@ interface ReportLostIdProps {
   initialStudents: UserData[];
 }
 
-export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
+export default function ReportedFoudIds({ initialStudents,  }: ReportLostIdProps) {
   // use the passed prop data
   const [students, setStudents] = useState(initialStudents);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -156,7 +158,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
       resetForm();
       setIsModalOpen(false);
     } catch (error) {
-      console.log(error);
       toast.error("There was an error processing your request.");
     }
   };
@@ -195,7 +196,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
       setImagePreview(fetchedStudent.image ? `${baseImageUrl}${fetchedStudent.image}` : "/placeholder-image.jpg");
       setIsModalOpen(true);
     } catch (error) {
-      console.log(error);
       toast.error("There was an error fetching student details.");
     }
   };
@@ -203,12 +203,10 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
   // Handle delete student
   const handleDelete = async (id: number) => {
     try {
-      await deleteLostId(id);
+      await deleteReportedLostId(id);
       setStudents(students.filter((student) => student.id !== id));
-      toast.success("The student has been deleted successfully.");
+      toast.success("deleted successfully.");
     } catch (error) {
-      console.log(error);
-
       toast.error("There was an error deleting the student.");
     }
   };
@@ -232,10 +230,10 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     <div className="container mx-auto py-6">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Report LostId Management</h1>
-        <Button onClick={handleAddNew}>
+        {/* <Button onClick={handleAddNew}>
           <Plus className="mr-2 h-4 w-4" />
           Report LostId
-        </Button>
+        </Button> */}
       </div>
 
       <div className="mb-4 flex items-center justify-between">
@@ -288,13 +286,13 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                 </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
-                    <Button
+                    {/* <Button
                       variant="outline"
                       size="icon"
                       onClick={() => handleEdit(student)}
                     >
                       <Edit className="h-4 w-4" />
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="outline"
                       size="icon"

@@ -1,8 +1,14 @@
+import { getAllReportedLostId } from '@/actions/ReportedLostIds';
+import ReportedLostIds from '@/components/ReportedLostIds/ReportedLostIds';
 import React from 'react'
 
-const page = () => {
+const page = async() => {
+  const initialStudents = await getAllReportedLostId() || [];
+
   return (
-    <div>page</div>
+    <div>
+      <ReportedLostIds initialStudents={initialStudents}/>
+    </div>
   )
 }
 

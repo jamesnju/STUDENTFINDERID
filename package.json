@@ -34,6 +34,7 @@
     "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
+    "webpack": "^5.98.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
