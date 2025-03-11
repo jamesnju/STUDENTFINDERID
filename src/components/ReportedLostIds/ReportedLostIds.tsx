@@ -262,6 +262,7 @@ export default function ReportedFoudIds({ initialStudents,  }: ReportLostIdProps
             <TableRow>
               <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
+              <TableHead>Reported userId</TableHead>
               <TableHead>Admission No</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Actions</TableHead>
@@ -280,6 +281,7 @@ export default function ReportedFoudIds({ initialStudents,  }: ReportLostIdProps
                   />
                 </TableCell>
                 <TableCell className="font-medium">{student.name}</TableCell>
+                <TableCell className="font-medium">{student.userId}</TableCell>
                 <TableCell>{student.admissionNo}</TableCell>
                 <TableCell className="max-w-xs truncate">
                   {student.description}
@@ -303,7 +305,7 @@ export default function ReportedFoudIds({ initialStudents,  }: ReportLostIdProps
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => copyToClipboard(student.id)}
+                      onClick={() => copyToClipboard(student.userId || "N/A")}
                       className="relative"
                     >
                       <Clipboard className="h-4 w-4" />

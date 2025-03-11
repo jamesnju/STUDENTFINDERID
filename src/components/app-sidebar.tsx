@@ -1,5 +1,5 @@
 "use client"
-import { Bell, Home, IdCard, IdCardIcon, LogOut, Text, User } from "lucide-react"
+import { Bell, FlagTriangleRight, Home, IdCard, IdCardIcon, LogOut, MessageCircle, MessageSquareMore, Search, SearchCheck, Text, User } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
@@ -41,18 +41,18 @@ export function AppSidebar({
 
   const navItems = [
     { name: "Dashboard", href: "/main/dashboard", icon: Home },
-    { name: "Report Lost ID", href: "/main/reportLostId", icon: IdCardIcon },
-    { name: "Report Found ID", href: "/main/reportFoundId", icon: IdCardIcon },
+    { name: "Report Lost ID", href: "/main/reportLostId", icon: FlagTriangleRight },
+    { name: "Report Found ID", href: "/main/reportFoundId", icon: Search },
     { name: "Reported LostIds", href: "/main/reportedLostIds", icon: IdCard },
-    { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: IdCard },
-    { name: "Chat", href: "/main/chats", icon: Text },
-    { name: "Profile", href: "/main/profile", icon: User },
+    { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: SearchCheck },
+    { name: "Chat", href: "/main/chats", icon: MessageSquareMore  },
+    // { name: "Profile", href: "/main/profile", icon: User },
 
   ]
 
   return (
-    <Sidebar className="bg-[#34495E]">
-      <SidebarHeader className="border-b border-sidebar-border p-4">
+    <Sidebar className="bg-[#16578e]">
+      <SidebarHeader className="border-b border-sidebar-border p-4 bg-[#cee619]">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarImage src={user.avatar} alt={session?.user.name} />
@@ -64,21 +64,21 @@ export function AppSidebar({
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent className="p-2 ">
+      <SidebarContent className="p-2 bg-[#f2fa9c] text-[#252f04]">
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={item.name}>
                 <Link href={item.href}>
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.name}</span>
+                  <item.icon className="h-18 w-24 " />
+                  <span className="text-base">{item.name}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
         <SidebarSeparator className="my-2" />
-        <SidebarMenu>
+        {/* <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Notifications">
               <Bell className="h-4 w-4" />
@@ -90,9 +90,9 @@ export function AppSidebar({
               )}
             </SidebarMenuButton>
           </SidebarMenuItem>
-        </SidebarMenu>
+        </SidebarMenu> */}
       </SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border p-4">
+      <SidebarFooter className="border-t border-sidebar-border p-4 bg-[#f2fa9c]" >
         <Button variant="outline" className="w-full justify-start gap-2 cursor-pointer" onClick={() => signOut({ callbackUrl: "/login" })}>
           <LogOut className="h-4 w-4" />
           Logout

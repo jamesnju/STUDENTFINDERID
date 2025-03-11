@@ -2,6 +2,7 @@
 
 import baseUrl from "@/constant/constant";
 import axios from "axios";
+import { revalidateTag } from "next/cache";
 
 
 export async function postFoundId(apiFormData: FormData) {
@@ -115,6 +116,7 @@ export const getByFoundId = async (id: number | undefined) => {
 
   try {
     const response = await axios.get(url);
+    revalidateTag("")
     return response.data?.foundID ?? {};
   } catch (error: any) {
     console.error('Error fetching found ID:', error.message);

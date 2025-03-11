@@ -303,7 +303,7 @@ export default function ReportedFoudIds({ initialStudents,  }: ReportLostIdProps
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => copyToClipboard(student.id)}
+                      onClick={() => copyToClipboard(student.userId || "N/A")}
                       className="relative"
                     >
                       <Clipboard className="h-4 w-4" />

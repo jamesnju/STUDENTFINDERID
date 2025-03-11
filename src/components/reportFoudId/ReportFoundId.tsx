@@ -3,7 +3,7 @@
 import type React from "react";
 import { useState } from "react";
 import Image from "next/image";
-import { Clipboard, Edit, Filter, Trash2 } from "lucide-react";
+import { Clipboard, Edit, Filter, Plus, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
@@ -175,10 +175,10 @@ export default function ReportFoundId({ initialStudents,  }: ReportLostIdProps) 
   };
 
   // Open modal for adding new student
-  // const handleAddNew = () => {
-  //   resetForm();
-  //   setIsModalOpen(true);
-  // };
+  const handleAddNew = () => {
+    resetForm();
+    setIsModalOpen(true);
+  };
 
   // Open modal for editing student
   const handleEdit = async (student: UserData) => {
@@ -231,11 +231,11 @@ export default function ReportFoundId({ initialStudents,  }: ReportLostIdProps) 
   return (
     <div className="container mx-auto py-6">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Report FoundId Management</h1>
-        {/* <Button onClick={handleAddNew}>
+        <h1 className="text-2xl font-bold">Report FoundId Page</h1>
+        <Button onClick={handleAddNew}>
           <Plus className="mr-2 h-4 w-4" />
           Report FoundId
-        </Button> */}
+        </Button>
       </div>
 
       <div className="mb-4 flex items-center justify-between">
@@ -302,7 +302,7 @@ export default function ReportFoundId({ initialStudents,  }: ReportLostIdProps) 
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="outline"
                       size="icon"
                       onClick={() => copyToClipboard(student.id)}
@@ -310,7 +310,7 @@ export default function ReportFoundId({ initialStudents,  }: ReportLostIdProps) 
                     >
                       <Clipboard className="h-4 w-4" />
                       <span className="sr-only">Copy ID</span>
-                    </Button>
+                    </Button> */}
                   </div>
                 </TableCell>
               </TableRow>
@@ -420,6 +420,7 @@ export default function ReportFoundId({ initialStudents,  }: ReportLostIdProps) 
                   {imagePreview && (
                     <div className="mt-2">
                       <Image
+                        //src={`${baseImageUrl}${students.image}`} // Ensure the correct path
                         src={imagePreview || "/placeholder.svg"}
                         alt="Preview"
                         width={100}

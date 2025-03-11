@@ -4,31 +4,29 @@ import { useState, useEffect } from "react"
 import { ChatList } from "@/components/chat-list"
 import { ChatWindow } from "@/components/chat-window"
 import { NewChatForm } from "@/components/new-chat-form"
-import { User } from "../../../../types/user"
-import { Chat } from "../../../../types/chat"
-import { Message } from "../../../../types/message"
+import type { User } from "../../../../types/user"
 import baseUrl from "@/constant/constant"
 import { useSession } from "next-auth/react"
 
-export interface ApiMessage {
+// Define the ChatMessage interface to match what ChatList expects
+export interface ChatMessage {
   id: number
   senderId: number
   receiverId: number
   text: string
-  sentAt: Date
-  chatId?: number
+  sentAt: string
+  chatId: number
+  sender: {
+    name: string
+  }
+  hasNewMessages?: boolean
 }
 
 export default function ChatApp() {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
-  const [chats, setChats] = useState<
-    (Chat & {
-      hasNewMessages?: boolean
-      lastMessage?: Message
-    })[]
-  >([])
-  const {data: session} = useSession()
+  const [selectedChat, setSelectedChat] = useState<ChatMessage | null>(null)
+  const [chats, setChats] = useState<ChatMessage[]>([])
+  const { data: session } = useSession()
 
   // Fetch current user and chats
   useEffect(() => {
@@ -37,47 +35,51 @@ export default function ChatApp() {
       const mockCurrentUser: User = {
         id: session.user.id,
         name: session.user.name,
-      };
+      }
 
-    setCurrentUser(mockCurrentUser)
+      setCurrentUser(mockCurrentUser)
 
-    // Fetch chats for the current user
-    const fetchChats = async () => {
-      try {
-        // In a real app, you would fetch this from your API
-        const response = await fetch(`${baseUrl}usermessages/?userId=${mockCurrentUser.id}`)
-        if (response.ok) {
-          const data = await response.json()
-          setChats(data)
+      // Fetch chats for the current user
+      const fetchChats = async () => {
+        try {
+          // In a real app, you would fetch this from your API
+          const response = await fetch(`${baseUrl}usermessages/?userId=${mockCurrentUser.id}`)
+          if (response.ok) {
+            const data = await response.json()
+            // The data is already in the correct format (ChatMessage[])
+            setChats(data)
+          }
+        } catch (error) {
+          console.error("Error fetching chats:", error)
         }
-      } catch (error) {
-        console.error("Error fetching chats:", error)
+      }
+
+      fetchChats()
+
+      // Set up polling for new messages
+      const intervalId = setInterval(() => {
+        if (mockCurrentUser.id) {
+          fetchNewMessages(mockCurrentUser.id)
+        }
+      }, 3000) // Poll every 3 seconds
+
+      // Listen for the markChatAsRead event
+      const handleMarkChatAsRead = (event: CustomEvent) => {
+        const { chatId } = event.detail
+        setChats((prevChats) =>
+          prevChats.map((chat) => (chat.chatId === chatId ? { ...chat, hasNewMessages: false } : chat)),
+        )
+      }
+
+      window.addEventListener("markChatAsRead", handleMarkChatAsRead as EventListener)
+
+      // Clean up the event listener
+      return () => {
+        clearInterval(intervalId)
+        window.removeEventListener("markChatAsRead", handleMarkChatAsRead as EventListener)
       }
     }
-
-    fetchChats()
-
-    // Set up polling for new messages
-    const intervalId = setInterval(() => {
-      if (mockCurrentUser.id) {
-        fetchNewMessages(mockCurrentUser.id)
-      }
-    }, 3000) // Poll every 3 seconds
-
-    // Listen for the markChatAsRead event
-    const handleMarkChatAsRead = (event: CustomEvent) => {
-      const { chatId } = event.detail
-      setChats((prevChats) => prevChats.map((chat) => (chat.id === chatId ? { ...chat, hasNewMessages: false } : chat)))
-    }
-
-    window.addEventListener("markChatAsRead", handleMarkChatAsRead as EventListener)
-
-    // Clean up the event listener
-    return () => {
-      clearInterval(intervalId)
-      window.removeEventListener("markChatAsRead", handleMarkChatAsRead as EventListener)
-    }
-  }}, [session])
+  }, [session])
 
   // Function to fetch new messages
   const fetchNewMessages = async (userId: number) => {
@@ -94,7 +96,7 @@ export default function ChatApp() {
 
             // Group messages by chat
             const messagesByChatId = new Map()
-            newMessages.forEach((message:ApiMessage) => {
+            newMessages.forEach((message: ChatMessage) => {
               if (!messagesByChatId.has(message.chatId)) {
                 messagesByChatId.set(message.chatId, [])
               }
@@ -103,12 +105,12 @@ export default function ChatApp() {
 
             // Update each chat with new messages
             messagesByChatId.forEach((messages, chatId) => {
-              const chatIndex = updatedChats.findIndex((chat) => chat.id === chatId)
+              const chatIndex = updatedChats.findIndex((chat) => chat.chatId === chatId)
               if (chatIndex !== -1) {
                 updatedChats[chatIndex] = {
                   ...updatedChats[chatIndex],
                   hasNewMessages: true,
-                  lastMessage: messages[0], // Most recent message
+                  // No need for lastMessage property as we're using the message itself
                 }
               }
             })
@@ -118,7 +120,7 @@ export default function ChatApp() {
 
           // If we have a selected chat, update its messages
           if (selectedChat) {
-            const chatMessages = newMessages.filter((message:ApiMessage) => message.chatId === selectedChat.id)
+            const chatMessages = newMessages.filter((message: ChatMessage) => message.chatId === selectedChat.chatId)
 
             if (chatMessages.length > 0) {
               // Update the messages in the chat window
@@ -132,9 +134,23 @@ export default function ChatApp() {
     }
   }
 
-  const handleChatCreated = (newChat: Chat) => {
-    setChats((prev) => [...prev, newChat])
-    setSelectedChat(newChat)
+  // Update the handleChatCreated function to work with ChatMessage
+  const handleChatCreated = (newChat: any) => {
+    // Convert the newChat to a ChatMessage format
+    const chatMessage: ChatMessage = {
+      id: newChat.id,
+      chatId: newChat.id, // Assuming the chat ID is the same as the message ID for new chats
+      senderId: currentUser?.id || 0,
+      receiverId: newChat.receiverId || 0,
+      text: newChat.text || "",
+      sentAt: new Date().toISOString(),
+      sender: {
+        name: currentUser?.name || "",
+      },
+    }
+
+    setChats((prev) => [...prev, chatMessage])
+    setSelectedChat(chatMessage)
   }
 
   if (!currentUser) {
@@ -157,8 +173,8 @@ export default function ChatApp() {
         </div>
         <ChatList
           chats={chats}
-          selectedChatId={selectedChat?.id}
-          onSelectChat={setSelectedChat}
+          selectedChatId={selectedChat?.chatId}
+          onSelectChat={(chat: ChatMessage) => setSelectedChat(chat)}
           currentUserId={currentUser.id}
         />
       </div>

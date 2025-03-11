@@ -302,7 +302,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="outline"
                       size="icon"
                       onClick={() => copyToClipboard(student.id)}
@@ -310,7 +310,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                     >
                       <Clipboard className="h-4 w-4" />
                       <span className="sr-only">Copy ID</span>
-                    </Button>
+                    </Button> */}
                   </div>
                 </TableCell>
               </TableRow>
@@ -357,10 +357,10 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>
-              {editingStudent ? "Edit Student" : "Add New Student"}
+              {editingStudent ? "Edit Lost iddetails" : "Add New Lost id"}
             </DialogTitle>
             <DialogDescription>
-              Fill in the details below to {editingStudent ? "update" : "add"} a student.
+              Fill in the details below to {editingStudent ? "update" : "add"}  lost id details.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit}>

@@ -1,17 +1,31 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-
 import { MessageInput } from "@/components/message-input"
 import { MessageBubble } from "@/components/message-bubble"
 import { Button } from "@/components/ui/button"
 import { RefreshCw } from "lucide-react"
 import baseUrl from "@/constant/constant"
-import { Message } from "../../types/message"
-import { Chat } from "../../types/chat"
+import type { Message } from "../../types/message"
+import type { Chat } from "../../types/chat"
 
+// Import or define the ChatMessage interface
+interface ChatMessage {
+  id: number
+  senderId: number
+  receiverId: number
+  text: string
+  sentAt: string
+  chatId: number
+  sender?: {
+    name: string
+  }
+  hasNewMessages?: boolean
+}
+
+// Update the props to accept either Chat or ChatMessage
 interface ChatWindowProps {
-  chat: Chat
+  chat: Chat | ChatMessage
   currentUserId: number
 }
 
@@ -21,14 +35,45 @@ export function ChatWindow({ chat, currentUserId }: ChatWindowProps) {
   const [error, setError] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  const fetchMessages = async (showLoading = true) => {
-    if (!chat?.id) return; // Skip if chat is null or has no ID
+  // Function to get chat ID regardless of chat type
+  const getChatId = () => {
+    // If it's a ChatMessage with chatId property
+    if ("chatId" in chat) {
+      return chat.chatId
+    }
+    // If it's a traditional Chat with id property
+    return chat.id
+  }
 
-  if (showLoading) setIsLoading(true);
-  setError("");
+  // Function to get the other user's ID regardless of chat type
+  const getOtherUserId = () => {
+    // If it's a ChatMessage with senderId and receiverId
+    if ("senderId" in chat && "receiverId" in chat) {
+      return chat.senderId === currentUserId ? chat.receiverId : chat.senderId
+    }
+    // If it's a traditional Chat with user1Id and user2Id
+    return chat.user1Id === currentUserId ? chat.user2Id : chat.user1Id
+  }
+
+  // Function to get the other user's name if available
+  const getOtherUserName = () => {
+    // If it's a ChatMessage with sender info
+    if ("sender" in chat && chat.sender?.name && chat.senderId !== currentUserId) {
+      return chat.sender.name
+    }
+    // Otherwise use a generic name with ID
+    return `User ${getOtherUserId()}`
+  }
+
+  const fetchMessages = async (showLoading = true) => {
+    const chatId = getChatId()
+    if (!chatId) return // Skip if chat has no ID
+
+    if (showLoading) setIsLoading(true)
+    setError("")
 
     try {
-      const response = await fetch(`${baseUrl}chathistory/?chatId=${chat.id}`)
+      const response = await fetch(`${baseUrl}chathistory/?chatId=${chatId}`)
 
       if (!response.ok) {
         const data = await response.json()
@@ -42,11 +87,11 @@ export function ChatWindow({ chat, currentUserId }: ChatWindowProps) {
         setMessages(data)
 
         // Mark messages as read by updating the chat
-        // if (data.length > 0 && chat.hasNewMessages) {
+        // if (data.length > 0 && ('hasNewMessages' in chat) && chat.hasNewMessages) {
         //   // This would typically be an API call to mark messages as read
         //   // For now, we'll just update the UI
         //   const event = new CustomEvent("markChatAsRead", {
-        //     detail: { chatId: chat.id },
+        //     detail: { chatId: chatId },
         //   })
         //   window.dispatchEvent(event)
         // }
@@ -61,7 +106,8 @@ export function ChatWindow({ chat, currentUserId }: ChatWindowProps) {
   }
 
   useEffect(() => {
-    if (chat?.id) {
+    const chatId = getChatId()
+    if (chatId) {
       fetchMessages()
 
       // Set up polling for real-time updates
@@ -71,16 +117,17 @@ export function ChatWindow({ chat, currentUserId }: ChatWindowProps) {
 
       return () => clearInterval(intervalId)
     }
-  }, [chat?.id]) // Added fetchMessages to dependencies
+  }, [chat]) // Dependency on chat object
 
   useEffect(() => {
     // Scroll to bottom when messages change
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages]) // Removed messages from dependencies
+  }, [messages])
 
   const handleSendMessage = async (text: string) => {
     try {
-      const receiverId = chat.user1Id === currentUserId ? chat.user2Id : chat.user1Id
+      const chatId = getChatId()
+      const receiverId = getOtherUserId()
 
       const response = await fetch(baseUrl + "sendmessage", {
         method: "POST",
@@ -91,7 +138,7 @@ export function ChatWindow({ chat, currentUserId }: ChatWindowProps) {
           senderId: currentUserId,
           receiverId,
           text,
-          chatId: chat.id,
+          chatId: chatId,
         }),
       })
 
@@ -112,12 +159,10 @@ export function ChatWindow({ chat, currentUserId }: ChatWindowProps) {
     <div className="flex flex-col h-full">
       <div className="border-b border-border p-4 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">
-            Chat with User {chat.user1Id === currentUserId ? chat.user2Id : chat.user1Id}
-          </h2>
-          <p className="text-sm text-muted-foreground">Chat #{chat.id}</p>
+          <h2 className="text-lg font-semibold">Chat with {getOtherUserName()}</h2>
+          <p className="text-sm text-muted-foreground">Chat #{getChatId()}</p>
         </div>
-        <Button variant="ghost" size="icon"  disabled={isLoading}>
+        <Button variant="ghost" size="icon" disabled={isLoading} onClick={() => fetchMessages()}>
           <RefreshCw className={cn("h-4 w-4", isLoading && "animate-spin")} />
         </Button>
       </div>
