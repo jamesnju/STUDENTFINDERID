@@ -1,5 +1,5 @@
 "use client"
-import { Bell, FlagTriangleRight, Home, IdCard, IdCardIcon, LogOut, MessageCircle, MessageSquareMore, Search, SearchCheck, Text, User } from "lucide-react"
+import { Bell, DollarSign, FlagTriangleRight, Home, IdCard, IdCardIcon, LogOut, MessageCircle, MessageSquareMore, Search, SearchCheck, Text, User } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
@@ -46,7 +46,9 @@ export function AppSidebar({
     { name: "Reported LostIds", href: "/main/reportedLostIds", icon: IdCard },
     { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: SearchCheck },
     { name: "Chat", href: "/main/chats", icon: MessageSquareMore  },
-    // { name: "Profile", href: "/main/profile", icon: User },
+    { name: "User", href: "/main/users", icon: User },
+    { name: "Payment", href: "/main/payment", icon: DollarSign },
+
 
   ]
 

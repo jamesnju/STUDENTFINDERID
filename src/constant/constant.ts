@@ -2,6 +2,4 @@
 const baseUrl = "https://studentidapis.vercel.app/api/v1/"; 
 
 
-
-
 export default baseUrl

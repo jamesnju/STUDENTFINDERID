@@ -1,9 +1,11 @@
 import React from 'react'
 import ChatApp from './pageview'
+import { getAllPayments } from '@/actions/payments';
 
-const page = () => {
+const page = async () => {
+  const payments = await getAllPayments() || [];
   return (
-    <div><ChatApp/></div>
+    <div><ChatApp payments={payments}/></div>
   )
 }
 

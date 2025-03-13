@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import type React from "react";
 import { useState } from "react";
 import Image from "next/image";
@@ -42,12 +41,25 @@ export interface UserData {
   description: string;
   reportedAt?: string;
 }
+interface Payment {
+  id: number;
+  userId: number;
+  amount: number;
+  paymentMethod: 'M-Pesa' | string;
+  paymentStatus: 'processing' | 'completed' | 'failed' | string;
+  paymentDate: string; // ISO date string
+  createdAt: string; // ISO date string
+  transactionId: string;
+  merchantRequestId: string | null;
+  mpesaReceipt: string | null;
+}
 
 interface ReportLostIdProps {
   initialStudents: UserData[];
+  payments: Payment[];
 }
 
-export default function ReportedFoudIds({ initialStudents,  }: ReportLostIdProps) {
+export default function ReportedFoudIds({ initialStudents, payments }: ReportLostIdProps) {
   // use the passed prop data
   const [students, setStudents] = useState(initialStudents);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -213,8 +225,23 @@ export default function ReportedFoudIds({ initialStudents,  }: ReportLostIdProps
 
   // Copy student ID to clipboard.
   const copyToClipboard = (id: string | number) => {
-    navigator.clipboard.writeText(id.toString());
-    toast.success(`Student ID ${id} copied to clipboard.`);
+    const userRole = session?.user.role;
+    const userId = session?.user.id;
+    const userPayment = payments.find(payment => payment.userId === userId);
+    
+    if (userRole === 'ADMIN') {
+      navigator.clipboard.writeText(id.toString());
+      toast.success(`Student ID ${id} copied to clipboard.`);
+    } else if (userRole === 'STUDENT') {
+      if (userPayment?.paymentStatus === 'completed') {
+        navigator.clipboard.writeText(id.toString());
+        toast.success(`Student ID ${id} copied to clipboard.`);
+      } else {
+        toast.error('Pay to get the ID.');
+      }
+    } else {
+      toast.error('You do not have permission to copy the ID.');
+    }
   };
 
   // Toggle filter input.

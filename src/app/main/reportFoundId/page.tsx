@@ -4,10 +4,10 @@ import React from 'react'
 
 const page = async() => {
   const initialStudents = await getAllFoundId() || [];
-console.log(initialStudents, "server ddddddddddd------------")
+//console.log(payments, "server ddddddddddd------------")
   return (
     <div>
-      <ReportFoundId initialStudents={initialStudents}/>
+      <ReportFoundId initialStudents={initialStudents}  />
     </div>
   )
 }

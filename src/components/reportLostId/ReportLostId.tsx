@@ -37,7 +37,7 @@ export interface UserData {
   name: string;
   admissionNo: string;
   image: string;
-  description: string;
+  status: string;
   reportedAt?: string;
 }
 
@@ -57,7 +57,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
   const [formData, setFormData] = useState({
     name: "",
     admissionNo: "",
-    description: "",
+    status: "",
     image: null as File | null,
   });
   // imagePreview is used solely for display purposes.
@@ -88,7 +88,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
 
   // Handle form input changes
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -118,7 +118,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     const apiFormData = new FormData();
     apiFormData.append("name", formData.name);
     apiFormData.append("admissionNo", formData.admissionNo);
-    apiFormData.append("description", formData.description);
+    apiFormData.append("status", formData.status);
 
     // Append the userId, converted to string since FormData accepts only string or Blob.
     apiFormData.append("userId", userId.toString());
@@ -136,7 +136,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
           id: editingStudent.id,
           name: formData.name,
           admissionNo: formData.admissionNo,
-          description: formData.description,
+          status: formData.status,
           // If a new image is uploaded, use its filename; otherwise, retain previous image.
           image: formData.image ? formData.image.name : editingStudent.image,
         };
@@ -166,7 +166,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     setFormData({
       name: "",
       admissionNo: "",
-      description: "",
+      status: "",
       image: null,
     });
     setImagePreview(null);
@@ -188,7 +188,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
       setFormData({
         name: fetchedStudent.name,
         admissionNo: fetchedStudent.admissionNo,
-        description: fetchedStudent.description,
+        status: fetchedStudent.status,
         image: null,
       });
       // For the image preview, we display the correct image URL based on baseImageUrl.
@@ -265,7 +265,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
               <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Admission No</TableHead>
-              <TableHead>Description</TableHead>
+              <TableHead>status</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -284,7 +284,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                 <TableCell className="font-medium">{student.name}</TableCell>
                 <TableCell>{student.admissionNo}</TableCell>
                 <TableCell className="max-w-xs truncate">
-                  {student.description}
+                  {student.status}
                 </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
@@ -391,19 +391,23 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                   required
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="description" className="text-right">
-                  Description
+                     <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="status" className="text-right">
+                  Status
                 </Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
                   onChange={handleInputChange}
-                  className="col-span-3"
-                  rows={3}
+                  className="col-span-3 p-2 border rounded-md"
                   required
-                />
+                >
+                  <option value="">Select Status</option>
+                  <option value="Report LostId">Report LostId</option>
+                  {/* <option value="foundId">Found Id</option> */}
+                  <option value="Reconsiled with owner">Reconsiled with owner</option>
+                </select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="image" className="text-right">
