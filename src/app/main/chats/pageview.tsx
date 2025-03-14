@@ -183,7 +183,7 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
       <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: "#FFEBEE", color: "#D32F2F" }}>
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Access Denied</h1>
-          <p className="text-lg">Pay 2$ to get access to the chat page.</p>
+          <p className="text-lg">Pay 2$ to get access to the chat.</p>
           <a href="/main/payment" className="mt-6 inline-block bg-primary text-white py-2 px-4 rounded">
             Go to Payment Page
           </a>

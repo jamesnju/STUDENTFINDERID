@@ -5,7 +5,7 @@ import { getAllPayments } from '@/actions/payments';
 const page = async () => {
   const payments = await getAllPayments() || [];
   return (
-    <div><ChatApp payments={payments}/></div>
+    <div className='bg-white'><ChatApp payments={payments}/></div>
   )
 }
 

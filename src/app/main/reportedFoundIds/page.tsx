@@ -8,7 +8,7 @@ const page = async() => {
   const payments = await getAllPayments() || [];
 
   return (
-    <div>
+    <div className='bg-white'>
       <ReportedFoudIds initialStudents={initialStudents} payments={payments} />
     </div>
   )

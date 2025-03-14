@@ -254,7 +254,7 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
   };
 
   return (
-    <div className="container mx-auto py-6">
+    <div className="container mx-auto py-6 ">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold"> LostId Management Report Page</h1>
         {/* <Button onClick={handleAddNew}>

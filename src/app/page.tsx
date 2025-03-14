@@ -191,7 +191,7 @@ export default function Home() {
                       <UserRound className="h-5 w-5 text-green-800" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg text-green-900">Michael Chen</CardTitle>
+                      <CardTitle className="text-lg text-green-900">Lakisha Kipchumba</CardTitle>
                       <CardDescription>Student at pwani</CardDescription>
                     </div>
                   </div>
@@ -211,7 +211,7 @@ export default function Home() {
                       <UserRound className="h-5 w-5 text-green-800" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg text-green-900">Priya Patel</CardTitle>
+                      <CardTitle className="text-lg text-green-900">Joy Muthoni</CardTitle>
                       <CardDescription>Lecturer</CardDescription>
                     </div>
                   </div>
@@ -299,7 +299,7 @@ export default function Home() {
               <h3 className="font-medium mb-4">Contact</h3>
               <ul className="space-y-2 text-sm">
                 <li className="">Email: contact@findmyid.com</li>
-                <li className="">Phone: +1 (555) 123-4567</li>
+                <li className="">Phone: +2 (475) 123-4567</li>
                 <li className="flex gap-4 mt-4">
                   <Link href="#" className=" hover:text-foreground">
                     <svg

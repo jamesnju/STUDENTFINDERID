@@ -54,7 +54,7 @@ export function AppSidebar({
 
   return (
     <Sidebar className="bg-[#16578e]">
-      <SidebarHeader className="border-b border-sidebar-border p-4 bg-[#cee619]">
+      <SidebarHeader className="border-b border-sidebar-border p-4 bg-background/95 bg-gradient-to-r from-blue-500 to-purple-500 backdrop-blur supports-[backdrop-filter]:bg-background/60 gap-4">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarImage src={user.avatar} alt={session?.user.name} />
@@ -66,14 +66,16 @@ export function AppSidebar({
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent className="p-2 bg-[#f2fa9c] text-[#252f04]">
+      <SidebarContent className="
+      p-2 bg-background/95 bg-gradient-to-r from-blue-500 to-purple-500 backdrop-blur supports-[backdrop-filter]:bg-background/60 gap-4 border-b"
+      >
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={item.name}>
-                <Link href={item.href}>
-                  <item.icon className="h-18 w-24 " />
-                  <span className="text-base">{item.name}</span>
+                <Link href={item.href} >
+                  <item.icon className="h-8 w-8 " />
+                  <span className="text-base text-black">{item.name}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -94,7 +96,7 @@ export function AppSidebar({
           </SidebarMenuItem>
         </SidebarMenu> */}
       </SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border p-4 bg-[#f2fa9c]" >
+      <SidebarFooter className="border-t border-sidebar-border p-4 bg-pink-600" >
         <Button variant="outline" className="w-full justify-start gap-2 cursor-pointer" onClick={() => signOut({ callbackUrl: "/login" })}>
           <LogOut className="h-4 w-4" />
           Logout

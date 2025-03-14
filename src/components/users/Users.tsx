@@ -181,7 +181,7 @@ export default function Users({ initialStudents }: ReportLostIdProps) {
         <h1 className="text-2xl font-bold">Report LostId Management</h1>
         <Button onClick={handleAddNew}>
           <Plus className="mr-2 h-4 w-4" />
-          Report LostId
+          Add Student
         </Button>
       </div>
 
@@ -211,7 +211,6 @@ export default function Users({ initialStudents }: ReportLostIdProps) {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Password</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>

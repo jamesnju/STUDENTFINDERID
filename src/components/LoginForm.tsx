@@ -65,9 +65,15 @@ export default function LoginForm() {
         <p className="text-md text-gray-600">
           Don&apos;t have an account? <a href="/register" className="text-blue-500">Register here</a>
         </p>
+        <p className="text-md text-gray-600 px-4">
+          <a href="/" className="text-blue-500">Home</a>
+        </p>
       </div>
       <div className="md:w-1/2 p-4">
         <Card>
+        <p className="text-md text-gray-600 px-4">
+          <a href="/" className="text-blue-500">Home</a>
+        </p>
           <CardContent className="pt-6">
             <Formik
               initialValues={{ email: "", password: "" }}

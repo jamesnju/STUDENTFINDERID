@@ -8,25 +8,25 @@ import { useRef } from "react"
 
 const teamMembers = [
   {
-    name: "Dr. Sarah Johnson",
+    name: "Dr. Sarah Ndugu",
     role: "Founder & CEO",
     bio: "Former security expert with a passion for helping people recover lost items.",
     image: "/g1.jpg?height=300&width=300",
   },
   {
-    name: "Michael Chen",
+    name: "Michael Kiptum",
     role: "CTO",
     bio: "Tech innovator with expertise in secure verification systems and digital identity.",
     image: "/b1.jpg?height=300&width=300",
   },
   {
-    name: "Priya Patel",
+    name: "Mary Onyango",
     role: "Head of Operations",
     bio: "Operations specialist focused on creating efficient recovery processes.",
     image: "/b2.jpg?height=300&width=300",
   },
   {
-    name: "James Wilson",
+    name: "James Kamu",
     role: "Head of Community",
     bio: "Building and nurturing our community of users across the country.",
     image: "/b3.jpg?height=300&width=300",
