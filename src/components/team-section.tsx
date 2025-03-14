@@ -20,7 +20,7 @@ const teamMembers = [
     image: "/b1.jpg?height=300&width=300",
   },
   {
-    name: "Mary Onyango",
+    name: "Kelvin Onyango",
     role: "Head of Operations",
     bio: "Operations specialist focused on creating efficient recovery processes.",
     image: "/b2.jpg?height=300&width=300",

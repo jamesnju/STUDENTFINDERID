@@ -11,6 +11,7 @@ import { EyeIcon, EyeOffIcon, Loader } from "lucide-react"
 import { postUser } from "@/actions/User"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 // Define validation schema
 const RegisterSchema = Yup.object().shape({
@@ -80,16 +81,16 @@ const router = useRouter();
           Find your student ID quickly and easily using our system. Register today and make the process seamless.
         </p>
         <p className="text-md text-gray-600">
-          Already have an account? <a href="/login" className="text-blue-500">Login here</a>
+          Already have an account? <Link href="/login" className="text-blue-500">Login here</Link>
         </p>
         <p className="text-md text-gray-600 px-4">
-          <a href="/" className="text-blue-500">Home</a>
+          <Link href="/" className="text-blue-500">Home</Link>
         </p>
       </div>
       <div className="md:w-1/2 p-4">
         <Card>
         <p className="text-md text-gray-600 px-4">
-          <a href="/" className="text-blue-500">Home</a>
+          <Link href="/" className="text-blue-500">Home</Link>
         </p>
           <CardContent className="pt-6">
             <Formik

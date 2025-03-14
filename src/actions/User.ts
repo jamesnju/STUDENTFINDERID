@@ -6,7 +6,7 @@ interface formData {
   //id: number;
   name: string;
   email: string;
-  password: string;
+  //password: string;
   role: string;
 }
 export async function postUser(name: string, email: string, password: string) {
@@ -86,7 +86,7 @@ export const getAllUsers = async()=>{
 
 export async function updateUser(id: number, apiFormData: formData) {
   try {
-    const res = await fetch(baseUrl + `/${id}/user`, {
+    const res = await fetch(baseUrl + `${id}/user`, {
       method: "PATCH",
       body: JSON.stringify(apiFormData), // No need for JSON.stringify
     });

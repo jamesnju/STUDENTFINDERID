@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { EyeIcon, EyeOffIcon, Loader } from "lucide-react"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
+import Link from "next/link"
 
 export interface SignInFormValues {
   email: string
@@ -63,16 +64,16 @@ export default function LoginForm() {
           Find your student ID quickly and easily using our system. Login now and make the process seamless.
         </p>
         <p className="text-md text-gray-600">
-          Don&apos;t have an account? <a href="/register" className="text-blue-500">Register here</a>
+          Don&apos;t have an account? <Link href="/register" className="text-blue-500">Register here</Link>
         </p>
         <p className="text-md text-gray-600 px-4">
-          <a href="/" className="text-blue-500">Home</a>
+          <Link href="/" className="text-blue-500">Home</Link>
         </p>
       </div>
       <div className="md:w-1/2 p-4">
         <Card>
         <p className="text-md text-gray-600 px-4">
-          <a href="/" className="text-blue-500">Home</a>
+          <Link href="/" className="text-blue-500">Home</Link>
         </p>
           <CardContent className="pt-6">
             <Formik
