@@ -1,134 +1,203 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import toast from "react-hot-toast";
-import { postPayment } from "@/actions/payments";
+import type React from "react"
+
+import { useState } from "react"
+import { useSession } from "next-auth/react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { CreditCard, Clock, CheckCircle, XCircle } from "lucide-react"
+import toast from "react-hot-toast"
+import { postPayment } from "@/actions/payments"
+import { cn } from "@/lib/utils"
 
 export default function PaymentPage({ payments }: { payments: any[] }) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   const [formData, setFormData] = useState({
     userId: session?.user?.id || 0,
     phoneNumber: "",
     amount: 500, // Default amount
-  });
-  const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  })
+  const [loading, setLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
 
     try {
-      await postPayment(formData);
-      toast.success("Payment submitted successfully!");
+      await postPayment(formData)
+      toast.success("Payment submitted successfully!")
       setFormData({
         userId: session?.user?.id || 0,
         phoneNumber: "",
         amount: 500,
-      });
-      setIsModalOpen(false);
+      })
+      setIsModalOpen(false)
     } catch (error) {
-      toast.error("There was an error processing your payment.");
+      toast.error("There was an error processing your payment.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
-  const userPayments = payments.filter(payment => payment.userId === session?.user?.id);
+  const userPayments = payments.filter((payment) => payment.userId === session?.user?.id)
+
+  // Helper function to render status badge
+  const getStatusBadge = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "completed":
+      case "success":
+        return (
+          <Badge className="bg-green-500 hover:bg-green-600">
+            <CheckCircle className="w-3 h-3 mr-1" /> {status}
+          </Badge>
+        )
+      case "pending":
+      case "processing":
+        return (
+          <Badge className="bg-yellow-500 hover:bg-yellow-600">
+            <Clock className="w-3 h-3 mr-1" /> {status}
+          </Badge>
+        )
+      case "failed":
+      case "error":
+        return (
+          <Badge className="bg-destructive hover:bg-destructive/90">
+            <XCircle className="w-3 h-3 mr-1" /> {status}
+          </Badge>
+        )
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-8 mb-8">
-        <h1 className="text-2xl font-bold mb-6 text-center">Payment Page</h1>
-        <Button onClick={() => setIsModalOpen(true)} className="mb-6 bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded">
-          Pay
-        </Button>
-        {userPayments.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full bg-white border border-gray-200">
-              <thead>
-                <tr>
-                  <th className="py-2 px-4 border-b">Payment Method</th>
-                  <th className="py-2 px-4 border-b">Payment Status</th>
-                  <th className="py-2 px-4 border-b">Created At</th>
-                  <th className="py-2 px-4 border-b">Amount</th>
-                  <th className="py-2 px-4 border-b">Failed Reason</th>
-                  {/* <th className="py-2 px-4 border-b">User ID</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {userPayments.map((payment) => (
-                  <tr key={payment.id}>
-                    <td className="py-2 px-4 border-b">{payment.paymentMethod}</td>
-                    <td className="py-2 px-4 border-b">{payment.paymentStatus}</td>
-                    <td className="py-2 px-4 border-b">{new Date(payment.createdAt).toLocaleString()}</td>
-                    <td className="py-2 px-4 border-b">{payment.amount}</td>
-                    <td className="py-2 px-4 border-b">  {payment.failureReason || "Incomplete Transaction"} 
-                    </td>
-
-                    {/* <td className="py-2 px-4 border-b">{payment.userId}</td> */}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-muted/40 p-4 space-y-6">
+      <Card className="w-full max-w-4xl shadow-lg">
+        <CardHeader className="bg-primary/5 border-b">
+          <CardTitle className="text-2xl font-bold text-center flex items-center justify-center gap-2">
+            <CreditCard className="h-6 w-6" />
+            Payment Dashboard
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-medium">Your Payment History</h2>
+            <Button onClick={() => setIsModalOpen(true)} className="bg-primary hover:bg-primary/90">
+              Make a Payment
+            </Button>
           </div>
-        ) : (
-          <div className="text-center text-gray-500">No payments yet.</div>
-        )}
-      </div>
 
-      {/* Modal for payment form */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">Make a Payment</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <Label htmlFor="amount" className="block text-gray-700">
-                  Amount
-                </Label>
-                <Input
-                  id="amount"
-                  name="amount"
-                  value={formData.amount}
-                  readOnly
-                  className="mt-1 block w-full bg-gray-200"
-                />
+          {userPayments.length > 0 ? (
+            <div className="rounded-md border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="font-medium">Payment Method</TableHead>
+                    <TableHead className="font-medium">Status</TableHead>
+                    <TableHead className="font-medium">Date</TableHead>
+                    <TableHead className="font-medium text-right">Amount</TableHead>
+                    <TableHead className="font-medium">Reason</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {userPayments.map((payment) => (
+                    <TableRow key={payment.id} className="hover:bg-muted/30">
+                      <TableCell className="font-medium">{payment.paymentMethod}</TableCell>
+                      <TableCell>{getStatusBadge(payment.paymentStatus)}</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {new Date(payment.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">${payment.amount.toFixed(2)}</TableCell>
+                      <TableCell className={cn("max-w-[200px] truncate", payment.failureReason && "text-destructive")}>
+                        {payment.failureReason || "—"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-muted/20 rounded-lg border border-dashed">
+              <CreditCard className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
+              <p className="text-muted-foreground">No payment history available.</p>
+              <p className="text-sm text-muted-foreground mt-1">Make your first payment to see it here.</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Payment Modal using Dialog component */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CreditCard className="h-5 w-5" />
+              Make a Payment
+            </DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmit} className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="amount" className="text-sm font-medium">
+                Amount
+              </Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                <Input id="amount" name="amount" value={formData.amount} readOnly className="pl-8 bg-muted/30" />
               </div>
-              <div className="mb-4">
-                <Label htmlFor="phoneNumber" className="block text-gray-700">
-                  Phone Number
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                  required
-                  className="mt-1 block w-full"
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Button type="button" onClick={() => setIsModalOpen(false)} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                  Cancel
-                </Button>
-                <Button type="submit" className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded" disabled={loading}>
-                  {loading ? "Processing..." : "Submit Payment"}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+              <p className="text-xs text-muted-foreground">Standard payment amount</p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber" className="text-sm font-medium">
+                Phone Number
+              </Label>
+              <Input
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+                placeholder="Enter your phone number"
+                required
+                className="focus:ring-primary"
+              />
+            </div>
+
+            <DialogFooter className="mt-6 gap-2 sm:gap-0">
+              <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-primary hover:bg-primary/90" disabled={loading}>
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Processing...
+                  </span>
+                ) : (
+                  "Submit Payment"
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
-  );
+  )
 }
+

@@ -144,7 +144,7 @@ export const getUserById = async (id: number | undefined) => {
 
   try {
     const response = await axios.get(url);
-    return response.data?.lostID ?? {};
+    return response.data ?? {};
   } catch (error: any) {
     console.error('Error fetching lost ID:', error.message);
     return { error: error.message, status: error.response?.status || 400 };

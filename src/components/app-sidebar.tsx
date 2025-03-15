@@ -1,5 +1,6 @@
 "use client"
-import { Bell, DollarSign, FlagTriangleRight, Home, IdCard, IdCardIcon, LogOut, MessageCircle, MessageSquareMore, Search, SearchCheck, Text, User } from "lucide-react"
+
+import { BarChart3, FileSearch, Search, BadgeIcon as IdCard, CheckSquare, MessageSquare, Users, CreditCard, LogOut } from 'lucide-react'
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
@@ -40,70 +41,72 @@ export function AppSidebar({
   const {data: session} = useSession();
 
   const navItems = [
-    { name: "Dashboard", href: "/main/dashboard", icon: Home },
-    { name: "Report Lost ID", href: "/main/reportLostId", icon: FlagTriangleRight },
+    { name: "Dashboard", href: "/main/dashboard", icon: BarChart3 },
+    { name: "Report Lost ID", href: "/main/reportLostId", icon: FileSearch },
     { name: "Report Found ID", href: "/main/reportFoundId", icon: Search },
     { name: "Reported LostIds", href: "/main/reportedLostIds", icon: IdCard },
-    { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: SearchCheck },
-    { name: "Chat", href: "/main/chats", icon: MessageSquareMore  },
-    { name: "User", href: "/main/users", icon: User },
-    { name: "Payment", href: "/main/payment", icon: DollarSign },
-
-
+    { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: CheckSquare },
+    { name: "Chat", href: "/main/chats", icon: MessageSquare },
+    { name: "User", href: "/main/users", icon: Users },
+    { name: "Payment", href: "/main/payment", icon: CreditCard },
   ]
 
   return (
-    <Sidebar className="bg-[#16578e]">
-      <SidebarHeader className="border-b border-sidebar-border p-4 bg-background/95 bg-gradient-to-r from-blue-500 to-purple-500 backdrop-blur supports-[backdrop-filter]:bg-background/60 gap-4">
+    <Sidebar>
+      <SidebarHeader className="border-b border-border/30 p-4 bg-gradient-to-r from-indigo-600 to-violet-600">
         <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={user.avatar} alt={session?.user.name} />
-            <AvatarFallback>{session?.user.name.charAt(0).toUpperCase()}</AvatarFallback>
+          <Avatar className="h-10 w-10 border-2 border-white/20 shadow-md">
+            <AvatarImage src={user.avatar} alt={session?.user?.name || user.name} />
+            <AvatarFallback className="bg-indigo-800 text-white">
+              {(session?.user?.name || user.name).charAt(0).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
           <div className="flex flex-col overflow-hidden">
-            <span className="truncate font-medium">{session?.user.name}</span>
-            <span className="truncate text-xs text-sidebar-foreground/70">{session?.user.email}</span>
+            <span className="truncate font-medium text-white">{session?.user?.name || user.name}</span>
+            <span className="truncate text-xs text-white/70">{session?.user?.email || user.email}</span>
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent className="
-      p-2 bg-background/95 bg-gradient-to-r from-blue-500 to-purple-500 backdrop-blur supports-[backdrop-filter]:bg-background/60 gap-4 border-b"
-      >
+      <SidebarContent className="p-3 bg-gradient-to-b from-indigo-600 via-indigo-500 to-violet-600">
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={item.name}>
-                <Link href={item.href} >
-                  <item.icon className="h-8 w-8 " />
-                  <span className="text-base text-black">{item.name}</span>
+              <SidebarMenuButton 
+                asChild 
+                isActive={pathname === item.href} 
+                tooltip={item.name}
+                className={`transition-all duration-200 ${
+                  pathname === item.href 
+                    ? "bg-white/20 text-white font-medium shadow-md" 
+                    : "text-white/80 hover:bg-white/10"
+                }`}
+              >
+                <Link href={item.href}>
+                  <item.icon className="h-5 w-5" />
+                  <span className="text-sm">{item.name}</span>
+                  {item.name === "Chat" && notificationCount > 0 && (
+                    <Badge variant="secondary" className="ml-auto h-5 min-w-5 rounded-full px-1.5 text-xs bg-white text-indigo-700 font-medium">
+                      {notificationCount}
+                    </Badge>
+                  )}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-        <SidebarSeparator className="my-2" />
-        {/* <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Notifications">
-              <Bell className="h-4 w-4" />
-              <span>Notifications</span>
-              {notificationCount > 0 && (
-                <Badge variant="destructive" className="ml-auto h-5 min-w-5 rounded-full px-1 text-xs">
-                  {notificationCount}
-                </Badge>
-              )}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu> */}
+        <SidebarSeparator className="my-3 bg-white/20" />
       </SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border p-4 bg-pink-600" >
-        <Button variant="outline" className="w-full justify-start gap-2 cursor-pointer" onClick={() => signOut({ callbackUrl: "/login" })}>
+      <SidebarFooter className="border-t border-border/30 p-4 bg-violet-700">
+        <Button 
+          variant="outline" 
+          className="w-full justify-start gap-2 cursor-pointer bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white" 
+          onClick={() => signOut({ callbackUrl: "/login" })}
+        >
           <LogOut className="h-4 w-4" />
           Logout
         </Button>
       </SidebarFooter>
-      <SidebarRail />
+      <SidebarRail className="after:bg-white/10 hover:after:bg-white/20" />
     </Sidebar>
   )
 }
-
