@@ -37,22 +37,22 @@ export function AppSidebar({
   notificationCount = 3,
 }: AppSidebarProps) {
   const pathname = usePathname();
-  const {data: session} = useSession();
+  const { data: session } = useSession();
 
   const navItems = [
-    { name: "Dashboard", href: "/main/dashboard", icon: BarChart3 },
-    { name: "Report Lost ID", href: "/main/reportLostId", icon: FileSearch },
-    { name: "Report Found ID", href: "/main/reportFoundId", icon: Search },
-    { name: "Reported LostIds", href: "/main/reportedLostIds", icon: IdCard },
-    { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: CheckSquare },
-    { name: "Chat", href: "/main/chats", icon: MessageSquare },
-    { name: "Payment", href: "/main/payment", icon: CreditCard },
+    { name: "Dashboard", href: "/main/dashboard", icon: BarChart3, roles: ["ADMIN", "STUDENT"] },
+    { name: "Report Lost ID", href: "/main/reportLostId", icon: FileSearch, roles: ["ADMIN", "STUDENT"] },
+    { name: "Report Found ID", href: "/main/reportFoundId", icon: Search, roles: ["ADMIN", "STUDENT"] },
+    { name: "Reported LostIds", href: "/main/reportedLostIds", icon: IdCard, roles: ["ADMIN", "STUDENT"] },
+    { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: CheckSquare, roles: ["ADMIN", "STUDENT"] },
+    { name: "Chat", href: "/main/chats", icon: MessageSquare, roles: ["ADMIN", "STUDENT"] },
+    { name: "User", href: "/main/users", icon: Users, roles: ["ADMIN"] },
+    { name: "Payment", href: "/main/payment", icon: CreditCard, roles:["ADMIN", "STUDENT"] },
   ]
 
-  // Only add the "User" navigation item if the user is an admin
-  if (session?.user?.role === "ADMIN") {
-    navItems.push({ name: "User", href: "/main/users", icon: Users });
-  }
+  const userRole = session?.user?.role || "STUDENT"; // Assuming the user role is available in the session
+
+  const permittedNavItems = navItems.filter(item => item.roles.includes(userRole));
 
   return (
     <Sidebar>
@@ -72,7 +72,7 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent className="p-3 bg-gradient-to-b from-indigo-600 via-indigo-500 to-violet-600">
         <SidebarMenu>
-          {navItems.map((item) => (
+          {permittedNavItems.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton 
                 asChild 
@@ -87,6 +87,11 @@ export function AppSidebar({
                 <Link href={item.href}>
                   <item.icon className="h-5 w-5" />
                   <span className="text-sm">{item.name}</span>
+                  {/* {item.name === "Chat" && notificationCount > 0 && (
+                    <Badge variant="secondary" className="ml-auto h-5 min-w-5 rounded-full px-1.5 text-xs bg-white text-indigo-700 font-medium">
+                      {notificationCount}
+                    </Badge>
+                  )} */}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
