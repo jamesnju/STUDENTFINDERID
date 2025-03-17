@@ -1,5 +1,5 @@
-const baseImageUrl = "http://localhost:8000/";
-//const baseImageUrl = "https://studentidapis.vercel.app/"; 
+//const baseImageUrl = "http://localhost:8000/";
+const baseImageUrl = "https://studentidapis.vercel.app/"; 
 
 
 
