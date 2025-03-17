@@ -1,5 +1,4 @@
 "use client"
-
 import { BarChart3, FileSearch, Search, BadgeIcon as IdCard, CheckSquare, MessageSquare, Users, CreditCard, LogOut } from 'lucide-react'
 import { usePathname } from "next/navigation"
 import Link from "next/link"
@@ -47,9 +46,13 @@ export function AppSidebar({
     { name: "Reported LostIds", href: "/main/reportedLostIds", icon: IdCard },
     { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: CheckSquare },
     { name: "Chat", href: "/main/chats", icon: MessageSquare },
-    { name: "User", href: "/main/users", icon: Users },
     { name: "Payment", href: "/main/payment", icon: CreditCard },
   ]
+
+  // Only add the "User" navigation item if the user is an admin
+  if (session?.user?.role === "ADMIN") {
+    navItems.push({ name: "User", href: "/main/users", icon: Users });
+  }
 
   return (
     <Sidebar>
@@ -84,11 +87,6 @@ export function AppSidebar({
                 <Link href={item.href}>
                   <item.icon className="h-5 w-5" />
                   <span className="text-sm">{item.name}</span>
-                  {/* {item.name === "Chat" && notificationCount > 0 && (
-                    <Badge variant="secondary" className="ml-auto h-5 min-w-5 rounded-full px-1.5 text-xs bg-white text-indigo-700 font-medium">
-                      {notificationCount}
-                    </Badge>
-                  )} */}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
