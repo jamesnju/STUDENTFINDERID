@@ -33,6 +33,7 @@
     "recharts": "^2.15.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
+    "swr": "^2.3.3",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "webpack": "^5.98.0",

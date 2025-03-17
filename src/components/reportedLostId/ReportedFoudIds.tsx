@@ -1,9 +1,14 @@
-"use client"
+"use client";
 import type React from "react";
 import { useState } from "react";
 import Image from "next/image";
 import { Clipboard, Edit, Filter, Plus, Trash2 } from "lucide-react";
-import { postLostId, updateLostId, deleteLostId, getByLostId } from "@/actions/ReportLostId";
+import {
+  postLostId,
+  updateLostId,
+  deleteLostId,
+  getByLostId,
+} from "@/actions/ReportLostId";
 import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
@@ -40,13 +45,14 @@ export interface UserData {
   image: string;
   description: string;
   reportedAt?: string;
+  status: string;
 }
 interface Payment {
   id: number;
   userId: number;
   amount: number;
-  paymentMethod: 'M-Pesa' | string;
-  paymentStatus: 'processing' | 'completed' | 'failed' | string;
+  paymentMethod: "M-Pesa" | string;
+  paymentStatus: "processing" | "completed" | "failed" | string;
   paymentDate: string; // ISO date string
   createdAt: string; // ISO date string
   transactionId: string;
@@ -59,7 +65,10 @@ interface ReportLostIdProps {
   payments: Payment[];
 }
 
-export default function ReportedFoudIds({ initialStudents, payments }: ReportLostIdProps) {
+export default function ReportedFoudIds({
+  initialStudents,
+  payments,
+}: ReportLostIdProps) {
   // use the passed prop data
   const [students, setStudents] = useState(initialStudents);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -123,56 +132,56 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
   };
 
   // Handle form submission (add or update student)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Destructure userId from session; userId is a number.
-    const userId = session?.user.id || 0;
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // Destructure userId from session; userId is a number.
+  //   const userId = session?.user.id || 0;
 
-    // Create FormData for API submission.
-    const apiFormData = new FormData();
-    apiFormData.append("name", formData.name);
-    apiFormData.append("admissionNo", formData.admissionNo);
-    apiFormData.append("description", formData.description);
+  //   // Create FormData for API submission.
+  //   const apiFormData = new FormData();
+  //   apiFormData.append("name", formData.name);
+  //   apiFormData.append("admissionNo", formData.admissionNo);
+  //   apiFormData.append("description", formData.description);
 
-    // Append the userId, converted to string since FormData accepts only string or Blob.
-    apiFormData.append("userId", userId.toString());
+  //   // Append the userId, converted to string since FormData accepts only string or Blob.
+  //   apiFormData.append("userId", userId.toString());
 
-    // Only append the image filename if an image is provided.
-    if (formData.image) {
-      apiFormData.append("image", formData.image);
-    }
+  //   // Only append the image filename if an image is provided.
+  //   if (formData.image) {
+  //     apiFormData.append("image", formData.image);
+  //   }
 
-    try {
-      if (editingStudent) {
-        // Update API for an existing student.
-        await updateLostId(Number(editingStudent.id), apiFormData);
-        const updatedStudent: UserData = {
-          id: editingStudent.id,
-          name: formData.name,
-          admissionNo: formData.admissionNo,
-          description: formData.description,
-          // If a new image is uploaded, use its filename; otherwise, retain previous image.
-          image: formData.image ? formData.image.name : editingStudent.image,
-        };
-        setStudents(
-          students.map((student) =>
-            student.id === editingStudent.id ? updatedStudent : student
-          )
-        );
-        toast.success(`${formData.name} has been updated successfully.`);
-      } else {
-        // Call the API to add a new student.
-        await postLostId(apiFormData);
-        toast.success(`${formData.name} has been added successfully.`);
-        RevalidatePath("/main/reportLostId");
-      }
+  //   try {
+  //     if (editingStudent) {
+  //       // Update API for an existing student.
+  //       await updateLostId(Number(editingStudent.id), apiFormData);
+  //       const updatedStudent: UserData = {
+  //         id: editingStudent.id,
+  //         name: formData.name,
+  //         admissionNo: formData.admissionNo,
+  //         description: formData.description,
+  //         // If a new image is uploaded, use its filename; otherwise, retain previous image.
+  //         image: formData.image ? formData.image.name : editingStudent.image,
+  //       };
+  //       setStudents(
+  //         students.map((student) =>
+  //           student.id === editingStudent.id ? updatedStudent : student
+  //         )
+  //       );
+  //       toast.success(`${formData.name} has been updated successfully.`);
+  //     } else {
+  //       // Call the API to add a new student.
+  //       await postLostId(apiFormData);
+  //       toast.success(`${formData.name} has been added successfully.`);
+  //       RevalidatePath("/main/reportLostId");
+  //     }
 
-      resetForm();
-      setIsModalOpen(false);
-    } catch (error) {
-      toast.error("There was an error processing your request.");
-    }
-  };
+  //     resetForm();
+  //     setIsModalOpen(false);
+  //   } catch (error) {
+  //     toast.error("There was an error processing your request.");
+  //   }
+  // };
 
   // Reset form data
   const resetForm = () => {
@@ -205,7 +214,11 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
         image: null,
       });
       // For the image preview, we display the correct image URL based on baseImageUrl.
-      setImagePreview(fetchedStudent.image ? `${baseImageUrl}${fetchedStudent.image}` : "/placeholder-image.jpg");
+      setImagePreview(
+        fetchedStudent.image
+          ? `${baseImageUrl}${fetchedStudent.image}`
+          : "/placeholder-image.jpg"
+      );
       setIsModalOpen(true);
     } catch (error) {
       toast.error("There was an error fetching student details.");
@@ -218,6 +231,7 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
       await deleteReportedFoundId(id);
       setStudents(students.filter((student) => student.id !== id));
       toast.success("The deleted successfully.");
+      RevalidatePath("/main/reportLostId")
     } catch (error) {
       toast.error("There was an error deleting.");
     }
@@ -227,20 +241,20 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
   const copyToClipboard = (id: string | number) => {
     const userRole = session?.user.role;
     const userId = session?.user.id;
-    const userPayment = payments.find(payment => payment.userId === userId);
-    
-    if (userRole === 'ADMIN') {
+    const userPayment = payments.find((payment) => payment.userId === userId);
+
+    if (userRole === "ADMIN") {
       navigator.clipboard.writeText(id.toString());
       toast.success(`Student ID ${id} copied to clipboard.`);
-    } else if (userRole === 'STUDENT') {
-      if (userPayment?.paymentStatus === 'completed') {
+    } else if (userRole === "STUDENT") {
+      if (userPayment?.paymentStatus === "completed") {
         navigator.clipboard.writeText(id.toString());
         toast.success(`Student ID ${id} copied to clipboard.`);
       } else {
-        toast.error('Pay to get the ID.');
+        toast.error("Pay to get the ID.");
       }
     } else {
-      toast.error('You do not have permission to copy the ID.');
+      toast.error("You do not have permission to copy the ID.");
     }
   };
 
@@ -290,7 +304,7 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
               <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Admission No</TableHead>
-              <TableHead>Description</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -309,7 +323,15 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
                 <TableCell className="font-medium">{student.name}</TableCell>
                 <TableCell>{student.admissionNo}</TableCell>
                 <TableCell className="max-w-xs truncate">
-                  {student.description}
+                  <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      student.status === "foundId"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-pink-800"
+                    }`}
+                  >
+                    {student.status ?? "Unknown"}
+                  </span>
                 </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
@@ -320,13 +342,15 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
                     >
                       <Edit className="h-4 w-4" />
                     </Button> */}
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleDelete(Number(student.id))}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    {session?.user.role === "ADMIN" ? (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleDelete(Number(student.id))}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    ) : null}
                     <Button
                       variant="outline"
                       size="icon"
@@ -385,10 +409,11 @@ export default function ReportedFoudIds({ initialStudents, payments }: ReportLos
               {editingStudent ? "Edit Student" : "Add New Student"}
             </DialogTitle>
             <DialogDescription>
-              Fill in the details below to {editingStudent ? "update" : "add"} a student.
+              Fill in the details below to {editingStudent ? "update" : "add"} a
+              student.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">

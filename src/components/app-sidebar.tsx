@@ -57,7 +57,7 @@ export function AppSidebar({
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10 border-2 border-white/20 shadow-md">
             <AvatarImage src={user.avatar} alt={session?.user?.name || user.name} />
-            <AvatarFallback className="bg-indigo-800 text-white">
+            <AvatarFallback className="bg-indigo-800 text-black font-extrabold">
               {(session?.user?.name || user.name).charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
@@ -84,11 +84,11 @@ export function AppSidebar({
                 <Link href={item.href}>
                   <item.icon className="h-5 w-5" />
                   <span className="text-sm">{item.name}</span>
-                  {item.name === "Chat" && notificationCount > 0 && (
+                  {/* {item.name === "Chat" && notificationCount > 0 && (
                     <Badge variant="secondary" className="ml-auto h-5 min-w-5 rounded-full px-1.5 text-xs bg-white text-indigo-700 font-medium">
                       {notificationCount}
                     </Badge>
-                  )}
+                  )} */}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

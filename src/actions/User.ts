@@ -84,14 +84,17 @@ export const getAllUsers = async()=>{
   }
 }
 
-export async function updateUser(id: number, apiFormData: formData) {
+export async function updateUser(id: number, updateData: formData) {
   try {
     const res = await fetch(baseUrl + `${id}/user`, {
       method: "PATCH",
-      body: JSON.stringify(apiFormData), // No need for JSON.stringify
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateData), 
     });
 
-    console.log(apiFormData, "submitted apiFormData-----t--- data----");
+    console.log(updateData, "submitted apiFormData-----t--- data----");
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => null);

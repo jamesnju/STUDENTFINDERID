@@ -1,11 +1,11 @@
 "use client";
-
 import type React from "react";
 import { useState } from "react";
 import Image from "next/image";
 import { Clipboard, Edit, Filter, Plus, Trash2 } from "lucide-react";
 import { postLostId, updateLostId, deleteLostId, getByLostId } from "@/actions/ReportLostId";
 import { useSession } from "next-auth/react";
+import useSWR, { mutate } from 'swr';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,8 +28,9 @@ import {
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
-import { RevalidatePath } from "@/constant/RevalidateCustomPath";
 import baseImageUrl from "@/constant/uploadImage";
+import { RevalidatePath } from "@/constant/RevalidateCustomPath";
+import baseUrl from "@/constant/constant";
 
 export interface UserData {
   id: number;
@@ -45,9 +46,12 @@ interface ReportLostIdProps {
   initialStudents: UserData[];
 }
 
-export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
+export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
   // use the passed prop data
-  const [students, setStudents] = useState(initialStudents);
+  
+  const { data: students = initialStudents, error } = useSWR(`${baseUrl}lostID`, fetcher);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterValue, setFilterValue] = useState("");
@@ -60,7 +64,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     status: "",
     image: null as File | null,
   });
-  // imagePreview is used solely for display purposes.
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const itemsPerPage = 6;
@@ -68,7 +71,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     filterStudents(students, filterValue).length / itemsPerPage
   );
 
-  // Filter students based on name or admission number
   function filterStudents(students: UserData[], filter: string) {
     if (!filter) return students;
     return students.filter(
@@ -78,7 +80,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     );
   }
 
-  // Get current students for pagination
   const getCurrentStudents = () => {
     const filteredStudents = filterStudents(students, filterValue);
     const indexOfLastStudent = currentPage * itemsPerPage;
@@ -86,7 +87,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     return filteredStudents.slice(indexOfFirstStudent, indexOfLastStudent);
   };
 
-  // Handle form input changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -94,7 +94,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle image upload and preview
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -108,49 +107,29 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     }
   };
 
-  // Handle form submission (add or update student)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Destructure userId from session; userId is a number.
     const userId = session?.user.id || 0;
 
-    // Create FormData for API submission.
     const apiFormData = new FormData();
     apiFormData.append("name", formData.name);
     apiFormData.append("admissionNo", formData.admissionNo);
     apiFormData.append("status", formData.status);
-
-    // Append the userId, converted to string since FormData accepts only string or Blob.
     apiFormData.append("userId", userId.toString());
 
-    // Only append the image filename if an image is provided.
     if (formData.image) {
       apiFormData.append("image", formData.image);
     }
 
     try {
       if (editingStudent) {
-        // Update API for an existing student.
         await updateLostId(Number(editingStudent.id), apiFormData);
-        const updatedStudent: UserData = {
-          id: editingStudent.id,
-          name: formData.name,
-          admissionNo: formData.admissionNo,
-          status: formData.status,
-          // If a new image is uploaded, use its filename; otherwise, retain previous image.
-          image: formData.image ? formData.image.name : editingStudent.image,
-        };
-        setStudents(
-          students.map((student) =>
-            student.id === editingStudent.id ? updatedStudent : student
-          )
-        );
+        mutate(`${baseUrl}lostID`);
         toast.success(`${formData.name} has been updated successfully.`);
       } else {
-        // Call the API to add a new student.
         await postLostId(apiFormData);
+        mutate(`${baseUrl}lostID`);
         toast.success(`${formData.name} has been added successfully.`);
-        RevalidatePath("/main/reportLostId");
       }
 
       resetForm();
@@ -161,7 +140,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     }
   };
 
-  // Reset form data
   const resetForm = () => {
     setFormData({
       name: "",
@@ -173,16 +151,13 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     setEditingStudent(null);
   };
 
-  // Open modal for adding new student
   const handleAddNew = () => {
     resetForm();
     setIsModalOpen(true);
   };
 
-  // Open modal for editing student
   const handleEdit = async (student: UserData) => {
     try {
-      // Call getByLostId to get the student's details.
       const fetchedStudent: UserData = await getByLostId(student.id);
       setEditingStudent(fetchedStudent);
       setFormData({
@@ -191,7 +166,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
         status: fetchedStudent.status,
         image: null,
       });
-      // For the image preview, we display the correct image URL based on baseImageUrl.
       setImagePreview(fetchedStudent.image ? `${baseImageUrl}${fetchedStudent.image}` : "/placeholder-image.jpg");
       setIsModalOpen(true);
     } catch (error) {
@@ -200,26 +174,22 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
     }
   };
 
-  // Handle delete student
   const handleDelete = async (id: number) => {
     try {
       await deleteLostId(id);
-      setStudents(students.filter((student) => student.id !== id));
+      mutate(`${baseUrl}lostID`);
       toast.success("The student has been deleted successfully.");
     } catch (error) {
       console.log(error);
-
       toast.error("There was an error deleting the student.");
     }
   };
 
-  // Copy student ID to clipboard.
   const copyToClipboard = (id: string | number) => {
     navigator.clipboard.writeText(id.toString());
     toast.success(`Student ID ${id} copied to clipboard.`);
   };
 
-  // Toggle filter input.
   const toggleFilter = () => {
     setIsFiltering(!isFiltering);
     if (isFiltering) {
@@ -274,7 +244,7 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
               <TableRow key={student.id}>
                 <TableCell>
                   <Image
-                    src={`${baseImageUrl}${student.image}`} // Ensure the correct path
+                    src={`${baseImageUrl}${student.image}`}
                     alt={student.name}
                     width={50}
                     height={50}
@@ -284,7 +254,15 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                 <TableCell className="font-medium">{student.name}</TableCell>
                 <TableCell>{student.admissionNo}</TableCell>
                 <TableCell className="max-w-xs truncate">
-                  {student.status}
+                <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      student.status === "foundId"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-pink-800"
+                    }`}
+                  >
+                    {student.status ?? "Unknown"}
+                  </span>
                 </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
@@ -302,15 +280,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                    {/* <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => copyToClipboard(student.id)}
-                      className="relative"
-                    >
-                      <Clipboard className="h-4 w-4" />
-                      <span className="sr-only">Copy ID</span>
-                    </Button> */}
                   </div>
                 </TableCell>
               </TableRow>
@@ -405,7 +374,6 @@ export default function ReportLostId({ initialStudents,  }: ReportLostIdProps) {
                 >
                   <option value="">Select Status</option>
                   <option value="Report LostId">Report LostId</option>
-                  {/* <option value="foundId">Found Id</option> */}
                   <option value="Reconsiled with owner">Reconsiled with owner</option>
                 </select>
               </div>

@@ -2,6 +2,7 @@
 
 import baseUrl from "@/constant/constant";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 
 
 export async function postLostId(apiFormData: FormData) {
@@ -20,6 +21,7 @@ export async function postLostId(apiFormData: FormData) {
     }
 
     const data = await res.json();
+    revalidatePath("/main/reportLostId")
     console.log("Success:", data);
     return data;
   } catch (error) {
@@ -45,6 +47,7 @@ export async function updateLostId(id: number, apiFormData: FormData) {
     }
 
     const data = await res.json();
+    revalidatePath("/main/reportLostId")
     console.log("Success:", data);
     return data;
   } catch (error) {
@@ -69,6 +72,8 @@ export async function deleteLostId(id: number){
       }
   
       const data = await res.json();
+      revalidatePath("/main/reportLostId")
+
       console.log("Success:", data);
       return data;
     } catch (error) {

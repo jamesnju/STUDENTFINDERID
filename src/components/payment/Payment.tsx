@@ -21,7 +21,7 @@ export default function PaymentPage({ payments }: { payments: any[] }) {
   const [formData, setFormData] = useState({
     userId: session?.user?.id || 0,
     phoneNumber: "",
-    amount: 500, // Default amount
+    amount: 50000, // Default amount
   })
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -38,10 +38,11 @@ export default function PaymentPage({ payments }: { payments: any[] }) {
     try {
       await postPayment(formData)
       toast.success("Payment submitted successfully!")
+      window.location.pathname = "/main/payment"
       setFormData({
         userId: session?.user?.id || 0,
         phoneNumber: "",
-        amount: 500,
+        amount: 50000,
       })
       setIsModalOpen(false)
     } catch (error) {

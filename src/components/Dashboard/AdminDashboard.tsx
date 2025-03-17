@@ -36,85 +36,25 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
+ 
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-// Mock data for the tables
-const lostIDsData = [
-  { id: "L001", studentName: "John Doe", studentId: "STU12345", reportDate: "2025-03-10", status: "Pending" },
-  { id: "L002", studentName: "Jane Smith", studentId: "STU67890", reportDate: "2025-03-11", status: "Pending" },
-  { id: "L003", studentName: "Alex Johnson", studentId: "STU54321", reportDate: "2025-03-12", status: "Matched" },
-  { id: "L004", studentName: "Sarah Williams", studentId: "STU09876", reportDate: "2025-03-13", status: "Pending" },
-  { id: "L005", studentName: "Michael Brown", studentId: "STU13579", reportDate: "2025-03-14", status: "Matched" },
-]
-
-const foundIDsData = [
-  {
-    id: "F001",
-    foundBy: "Library Staff",
-    studentId: "STU67890",
-    foundLocation: "Main Library",
-    reportDate: "2025-03-11",
-    status: "Pending",
-  },
-  {
-    id: "F002",
-    foundBy: "Security",
-    studentId: "STU54321",
-    foundLocation: "Student Center",
-    reportDate: "2025-03-12",
-    status: "Matched",
-  },
-  {
-    id: "F003",
-    foundBy: "Cafeteria Staff",
-    studentId: "STU24680",
-    foundLocation: "Cafeteria",
-    reportDate: "2025-03-13",
-    status: "Pending",
-  },
-  {
-    id: "F004",
-    foundBy: "Student",
-    studentId: "STU13579",
-    foundLocation: "Gym",
-    reportDate: "2025-03-14",
-    status: "Matched",
-  },
-  {
-    id: "F005",
-    foundBy: "Faculty",
-    studentId: "STU97531",
-    foundLocation: "Science Building",
-    reportDate: "2025-03-15",
-    status: "Pending",
-  },
-]
-
-// Mock data for charts
-const monthlyData = [
-  { name: "Jan", lost: 12, found: 8 },
-  { name: "Feb", lost: 19, found: 15 },
-  { name: "Mar", lost: 25, found: 22 },
-  { name: "Apr", lost: 18, found: 16 },
-  { name: "May", lost: 22, found: 19 },
-  { name: "Jun", lost: 15, found: 13 },
-]
+// Function to calculate monthly data
+const calculateMonthlyData = (lostIDsData: any[], foundIDsData: any[]) => {
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const data = months.map((month, index) => {
+    const lostCount = lostIDsData.filter((item) => new Date(item.reportedAt).getMonth() === index).length;
+    const foundCount = foundIDsData.filter((item) => new Date(item.reportedAt).getMonth() === index).length;
+    return { name: month, lost: lostCount, found: foundCount };
+  });
+  return data;
+};
 
 const statusData = [
-  { name: "Matched", value: 35 },
-  { name: "Pending", value: 65 },
+  { name: "Reconsiled with owner", value: 35 },
+  { name: "Report LostId", value: 15 },
+  { name: "FoundId", value: 55 },
 ]
 
 const locationData = [
@@ -128,140 +68,33 @@ const locationData = [
 
 // Colors for charts
 const COLORS = ["#8b5cf6", "#ec4899", "#06b6d4", "#10b981", "#f59e0b", "#ef4444"]
-const STATUS_COLORS = ["#10b981", "#f59e0b"]
+const STATUS_COLORS = ["#10b981", "#f59e0b", "green"]
 
-export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0, totalFoundIds = 0 }) {
+export default function AdminDashboard({ lostIDsData, foundIDsData,getStudents }: { lostIDsData: any; foundIDsData: any; getStudents: any }) {
   const [searchQuery, setSearchQuery] = useState("")
-
+const totalStudents = getStudents.length;
   // Filter data based on search query
   const filteredLostIDs = lostIDsData.filter(
-    (item) =>
-      item.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.studentId.toLowerCase().includes(searchQuery.toLowerCase()),
+    (item:any) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.admissionNo.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
   const filteredFoundIDs = foundIDsData.filter(
-    (item) =>
-      item.studentId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.foundLocation.toLowerCase().includes(searchQuery.toLowerCase()),
+    (item:any) =>
+      item.admissionNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.location.toLowerCase().includes(searchQuery.toLowerCase()),
   )
+
+  const monthlyData = calculateMonthlyData(lostIDsData, foundIDsData);
 
   return (
       <div className="flex min-h-screen">
-        {/* <Sidebar>
-          <SidebarHeader>
-            <div className="flex items-center gap-2 px-2">
-              <CreditCard className="h-6 w-6" />
-              <span className="font-bold">ID Finder Admin</span>
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive>
-                      <Link href="#">
-                        <Home />
-                        <span>Overview</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <CreditCard />
-                        <span>Lost IDs</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <CheckCircle />
-                        <span>Found IDs</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <Users />
-                        <span>Students</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <BarChart3 />
-                        <span>Analytics</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-            <SidebarGroup>
-              <SidebarGroupLabel>Administration</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <Shield />
-                        <span>User Management</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <Settings />
-                        <span>Settings</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-          <SidebarFooter>
-            <div className="px-3 py-2">
-              <div className="flex items-center gap-3 rounded-md bg-sidebar-accent p-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  A
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-medium">Admin User</span>
-                  <span className="text-xs text-sidebar-foreground/70">admin@school.edu</span>
-                </div>
-              </div>
-            </div>
-          </SidebarFooter>
-        </Sidebar> */}
 
         <div className="flex-1 overflow-auto">
           <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-6">
             <SidebarTrigger />
-            <div className="flex flex-1 items-center gap-4 md:gap-8">
-              <form className="flex-1 md:max-w-sm lg:max-w-lg">
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search IDs, students..."
-                    className="w-full rounded-lg bg-background pl-8 md:w-[300px] lg:w-[400px]"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-              </form>
-              <Button variant="outline" size="sm" className="ml-auto">
-                Help
-              </Button>
-            </div>
+            
           </header>
 
           <main className="flex-1 space-y-6 p-6">
@@ -287,9 +120,9 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                   <CardTitle className="text-lg font-medium">Total Lost IDs</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">{totalLostIds || lostIDsData.length}</div>
+                  <div className="text-3xl font-bold">{lostIDsData.length}</div>
                   <p className="text-xs opacity-80">
-                    {lostIDsData.filter((id) => id.status === "Matched").length} matched
+                    {lostIDsData.filter((id:any) => id.status === "Reconsiled with owner").length} matched
                   </p>
                 </CardContent>
               </Card>
@@ -298,9 +131,9 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                   <CardTitle className="text-lg font-medium">Total Found IDs</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">{totalFoundIds || foundIDsData.length}</div>
+                  <div className="text-3xl font-bold">{foundIDsData.length}</div>
                   <p className="text-xs opacity-80">
-                    {foundIDsData.filter((id) => id.status === "Matched").length} matched
+                    {foundIDsData.filter((id:any) => id.status === "Reconsiled with owner").length} matched
                   </p>
                 </CardContent>
               </Card>
@@ -344,7 +177,7 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                       <PieChart className="h-5 w-5" />
                       Status Distribution
                     </CardTitle>
-                    <CardDescription>Matched vs pending IDs</CardDescription>
+                    <CardDescription>Reconsiled vs Lost IDs</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="h-[300px] flex items-center justify-center">
@@ -372,7 +205,7 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                 </Card>
 
                 {/* Location Distribution */}
-                <Card className="col-span-3">
+                {/* <Card className="col-span-3">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <BarChart3 className="h-5 w-5" />
@@ -397,17 +230,33 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                       </ResponsiveContainer>
                     </div>
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </div>
-
+            <div className="flex flex-1 items-center gap-4 md:gap-8">
+              <form className="flex-1 md:max-w-sm lg:max-w-lg">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search IDs, students..."
+                    className="w-full rounded-lg bg-background pl-8 md:w-[300px] lg:w-[400px]"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+              </form>
+              {/* <Button variant="outline" size="sm" className="ml-auto">
+                Help
+              </Button> */}
+            </div>
             <Tabs defaultValue="lost" className="w-full">
               <div className="flex items-center justify-between">
                 <TabsList>
                   <TabsTrigger value="lost">Lost IDs</TabsTrigger>
                   <TabsTrigger value="found">Found IDs</TabsTrigger>
                 </TabsList>
-                <Button>Match IDs</Button>
+                {/* <Button>Match IDs</Button> */}
               </div>
 
               <TabsContent value="lost" className="mt-4">
@@ -425,21 +274,21 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                           <TableHead>Student ID</TableHead>
                           <TableHead>Report Date</TableHead>
                           <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          {/* <TableHead>Actions</TableHead> */}
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredLostIDs.length > 0 ? (
-                          filteredLostIDs.map((item) => (
+                          filteredLostIDs.map((item:any) => (
                             <TableRow key={item.id}>
                               <TableCell className="font-medium">{item.id}</TableCell>
-                              <TableCell>{item.studentName}</TableCell>
-                              <TableCell>{item.studentId}</TableCell>
-                              <TableCell>{item.reportDate}</TableCell>
+                              <TableCell>{item.name}</TableCell>
+                              <TableCell>{item.admissionNo}</TableCell>
+                              <TableCell>{item.reportedAt}</TableCell>
                               <TableCell>
                                 <span
                                   className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                                    item.status === "Matched"
+                                    item.status === "Reconsiled with owner"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-yellow-100 text-yellow-800"
                                   }`}
@@ -447,7 +296,7 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                                   {item.status}
                                 </span>
                               </TableCell>
-                              <TableCell>
+                              {/* <TableCell>
                                 <div className="flex space-x-2">
                                   <Button variant="outline" size="sm">
                                     View
@@ -456,7 +305,7 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                                     Edit
                                   </Button>
                                 </div>
-                              </TableCell>
+                              </TableCell> */}
                             </TableRow>
                           ))
                         ) : (
@@ -496,22 +345,22 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                           <TableHead>Location</TableHead>
                           <TableHead>Report Date</TableHead>
                           <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          {/* <TableHead>Actions</TableHead> */}
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredFoundIDs.length > 0 ? (
-                          filteredFoundIDs.map((item) => (
+                          filteredFoundIDs.map((item:any) => (
                             <TableRow key={item.id}>
                               <TableCell className="font-medium">{item.id}</TableCell>
-                              <TableCell>{item.foundBy}</TableCell>
-                              <TableCell>{item.studentId}</TableCell>
-                              <TableCell>{item.foundLocation}</TableCell>
-                              <TableCell>{item.reportDate}</TableCell>
+                              <TableCell>{item.name}</TableCell>
+                              <TableCell>{item.admissionNo}</TableCell>
+                              <TableCell>{item.location}</TableCell>
+                              <TableCell>{item.reportedAt}</TableCell>
                               <TableCell>
                                 <span
                                   className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                                    item.status === "Matched"
+                                    item.status === "Reconsiled with owner"
                                       ? "bg-green-100 text-green-800"
                                       : "bg-yellow-100 text-yellow-800"
                                   }`}
@@ -519,7 +368,7 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                                   {item.status}
                                 </span>
                               </TableCell>
-                              <TableCell>
+                              {/* <TableCell>
                                 <div className="flex space-x-2">
                                   <Button variant="outline" size="sm">
                                     View
@@ -528,7 +377,7 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
                                     Edit
                                   </Button>
                                 </div>
-                              </TableCell>
+                              </TableCell> */}
                             </TableRow>
                           ))
                         ) : (
@@ -557,4 +406,3 @@ export default function AdminDashboard({ totalStudents = 1234, totalLostIds = 0,
       </div>
   )
 }
-
