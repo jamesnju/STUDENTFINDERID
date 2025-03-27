@@ -41,8 +41,8 @@ export function AppSidebar({
 
   const navItems = [
     { name: "Dashboard", href: "/main/dashboard", icon: BarChart3, roles: ["ADMIN", "STUDENT"] },
-    { name: "Report Lost ID", href: "/main/reportLostId", icon: FileSearch, roles: ["ADMIN", "STUDENT"] },
-    { name: "Report Found ID", href: "/main/reportFoundId", icon: Search, roles: ["ADMIN", "STUDENT"] },
+    { name: "Report Lost ID", href: "/main/reportLostId", icon: FileSearch, roles: ["ADMIN", "STUDENT"], reason: "LOSTID" },
+    { name: "Report Found ID", href: "/main/reportFoundId", icon: Search, roles: ["ADMIN", "STUDENT"], reason: "FOUNDID" },
     { name: "Reported LostIds", href: "/main/reportedLostIds", icon: IdCard, roles: ["ADMIN", "STUDENT"] },
     { name: "Reported FoundIds", href: "/main/reportedFoundIds", icon: CheckSquare, roles: ["ADMIN", "STUDENT"] },
     { name: "Chat", href: "/main/chats", icon: MessageSquare, roles: ["ADMIN", "STUDENT"] },
@@ -51,8 +51,9 @@ export function AppSidebar({
   ]
 
   const userRole = session?.user?.role || "STUDENT"; // Assuming the user role is available in the session
+  const userReason = session?.user?.reason || "FOUNDID"; // Assuming the reason is available in the session
 
-  const permittedNavItems = navItems.filter(item => item.roles.includes(userRole));
+  const permittedNavItems = navItems.filter(item => item.roles.includes(userRole) && (!item.reason || item.reason === userReason));
 
   return (
     <Sidebar>

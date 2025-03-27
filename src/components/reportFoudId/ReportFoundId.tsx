@@ -53,6 +53,7 @@ export default function ReportFoundId({ initialStudents }: ReportLostIdProps) {
   const [filterValue, setFilterValue] = useState("");
   const [isFiltering, setIsFiltering] = useState(false);
   const [editingStudent, setEditingStudent] = useState<UserData | null>(null);
+  const [isLoading, setIsLoading] = useState(false)
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
     name: "",
@@ -105,6 +106,7 @@ export default function ReportFoundId({ initialStudents }: ReportLostIdProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     const userId = session?.user.id || 0;
 
     const apiFormData = new FormData();
@@ -147,6 +149,8 @@ export default function ReportFoundId({ initialStudents }: ReportLostIdProps) {
     } catch (error) {
       console.log(error);
       toast.error("There was an error processing your request.");
+    }finally{
+      setIsLoading(false);
     }
   };
 
@@ -255,7 +259,8 @@ export default function ReportFoundId({ initialStudents }: ReportLostIdProps) {
               <TableRow key={student.id}>
                 <TableCell>
                   <Image
-                    src={`${baseImageUrl}${student.image}`}
+                  src={student.image ? `${baseImageUrl}${student.image}` : "/idc.png"}
+                   //src={`${baseImageUrl}${student.image}` || "/idc.png"}
                     alt={student.name}
                     width={50}
                     height={50}
@@ -391,7 +396,7 @@ export default function ReportFoundId({ initialStudents }: ReportLostIdProps) {
 
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="image" className="text-right">
-                  Image
+                  Image<span>(Optional)</span>
                 </Label>
                 <div className="col-span-3">
                   <Input
@@ -426,8 +431,8 @@ export default function ReportFoundId({ initialStudents }: ReportLostIdProps) {
               >
                 Cancel
               </Button>
-              <Button type="submit">
-                {editingStudent ? "Update" : "Add"} Student
+              <Button type="submit" disabled={isLoading}>
+                {editingStudent ? "Update" : "Add"} FoundID
               </Button>
             </DialogFooter>
           </form>

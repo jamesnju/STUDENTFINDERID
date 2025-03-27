@@ -104,12 +104,12 @@ export default function Users({ initialStudents }: ReportLostIdProps) {
     setIsLoading(true);
     try {
       if (editingStudent) {
-        // When updating, only send id, name, email, and role
+        // When updating, only send name, email, role, and reason
         const updateData = {
-          id: userData.id,
           name: userData.name,
           email: userData.email,
           role: userData.role,
+          reason: "User updated", // Provide a default reason or modify as needed
         };
 
         console.log("Sending update data:", updateData);
@@ -131,7 +131,7 @@ export default function Users({ initialStudents }: ReportLostIdProps) {
         window.location.pathname = "/main/users"
       } else {
         // When creating, send all fields including password
-        await postUser(userData.name, userData.email, userData.password);
+        await postUser(userData.name, userData.email, userData.password, "User registered");
         toast.success(`${userData.name} has been added successfully.`);
          window.location.pathname = "/main/users"
       }

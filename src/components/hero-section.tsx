@@ -40,13 +40,13 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.6 }}
           >
             <Button size="lg" className="gap-2" asChild>
-              <Link href="/report-lost">
+              <Link href="/register">
                 <FileSearch className="h-5 w-5" />
                 Report Lost Id
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="gap-2" asChild>
-              <Link href="/report-found">
+              <Link href="/registerFound">
                 <Upload className="h-5 w-5" />
                 Report Found Id
               </Link>

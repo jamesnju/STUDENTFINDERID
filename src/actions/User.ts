@@ -8,15 +8,18 @@ interface formData {
   email: string;
   //password: string;
   role: string;
+  reason: string;
+
+  
 }
-export async function postUser(name: string, email: string, password: string) {
+export async function postUser(name: string, email: string, password: string,reason: string) {
   try {
     const res = await fetch(`${baseUrl}register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, reason }),
     });
 
     console.log("Response status:", res.status);

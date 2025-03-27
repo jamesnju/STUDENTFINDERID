@@ -64,7 +64,10 @@ export default function LoginForm() {
           Find your student ID quickly and easily using our system. Login now and make the process seamless.
         </p>
         <p className="text-md text-gray-600">
-          Don&apos;t have an account? <Link href="/register" className="text-blue-500">Register here</Link>
+          Don&apos;t have an account? <Link href="/registerFound" className="text-green-500 mb-2">Register here <span>FOUNDID</span></Link>
+        </p>
+        <p className="text-md text-gray-600">
+          Don&apos;t have an account? <Link href="/register" className="text-blue-500">Register here for <span>LOSTID</span></Link>
         </p>
         <p className="text-md text-gray-600 px-4">
           <Link href="/" className="text-blue-500">Home</Link>

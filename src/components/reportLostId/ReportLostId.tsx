@@ -1,5 +1,5 @@
 "use client";
-import type React from "react";
+import React from "react";
 import { useState } from "react";
 import Image from "next/image";
 import { Clipboard, Edit, Filter, Plus, Trash2 } from "lucide-react";
@@ -65,6 +65,8 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
     image: null as File | null,
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const itemsPerPage = 6;
   const totalPages = Math.ceil(
@@ -109,6 +111,8 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const userId = session?.user.id || 0;
 
     const apiFormData = new FormData();
@@ -137,6 +141,9 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
     } catch (error) {
       console.log(error);
       toast.error("There was an error processing your request.");
+    }finally{
+      setIsLoading(false);
+
     }
   };
 
@@ -377,9 +384,10 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
                   <option value="Reconsiled with owner">Reconsiled with owner</option>
                 </select>
               </div>
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="image" className="text-right">
-                  Image
+                  Image <span>(Optional)</span>
                 </Label>
                 <div className="col-span-3">
                   <Input
@@ -414,8 +422,8 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
               >
                 Cancel
               </Button>
-              <Button type="submit">
-                {editingStudent ? "Update" : "Add"} Student
+              <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Loading..." : editingStudent ? "Update" : "Add"} LostID
               </Button>
             </DialogFooter>
           </form>

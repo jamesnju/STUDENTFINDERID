@@ -240,9 +240,10 @@ export default function ReportedFoudIds({
   const copyToClipboard = (id: string | number) => {
     const userRole = session?.user.role;
     const userId = session?.user.id;
+    const userReason = session?.user?.reason;
     const userPayment = payments.find((payment) => payment.userId === userId);
 
-    if (userRole === "ADMIN") {
+    if (userRole === "ADMIN" || userRole === "STUDENT" && userReason === "FOUNDID") {
       navigator.clipboard.writeText(id.toString());
       toast.success(`Student ID ${id} copied to clipboard.`);
     } else if (userRole === "STUDENT") {

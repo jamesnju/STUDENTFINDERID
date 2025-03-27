@@ -169,6 +169,7 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
 
   // Check user role and payment status
   const userRole = session?.user?.role;
+  const userReason = session?.user?.reason;
   const userId = session?.user?.id;
   const userPayment = payments.find((payment) => payment.userId === userId);
 
@@ -180,12 +181,12 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
     );
   }
 
-  if (userRole === "STUDENT" && userPayment?.paymentStatus !== "completed") {
+  if (userRole === "STUDENT" && userReason === "LOSTID" && userPayment?.paymentStatus !== "completed") {
     return (
       <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: "#FFEBEE", color: "#D32F2F" }}>
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Access Denied</h1>
-          <p className="text-lg">Pay KSH 100 to get access to the chat.</p>
+          <p className="text-lg">Pay KSHS 1 to get access to the chat.</p>
           <a href="/main/payment" className="mt-6 inline-block bg-primary text-white py-2 px-4 rounded">
             Go to Payment Page
           </a>

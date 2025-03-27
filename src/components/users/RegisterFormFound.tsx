@@ -42,7 +42,7 @@ interface RegisterFormValues {
   reason: string
 }
 
-export default function RegisterForm() {
+export default function RegisterFormFound() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const router = useRouter();
@@ -78,7 +78,7 @@ export default function RegisterForm() {
     <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="md:w-1/2 p-4 text-center md:text-left">
         <h1 className="text-4xl font-bold text-blue-600 mb-4">Welcome to StudentID Finder</h1>
-        <h1 className="text-xl font-bold text-blue-600 mb-4">Register to Report <span className="text-red-500">LOSTID</span> </h1>
+        <h1 className="text-xl font-bold text-blue-600 mb-4">Register to Report <span className="text-green-500">FOUNDID</span> </h1>
 
         <p className="text-lg text-gray-700 mb-4">
           Find your student ID quickly and easily using our system. Register today and make the process seamless.
@@ -97,7 +97,7 @@ export default function RegisterForm() {
           </p>
           <CardContent className="pt-6">
             <Formik
-              initialValues={{ name: "", email: "", password: "", confirmPassword: "", reason: "LOSTID" }}
+              initialValues={{ name: "", email: "", password: "", confirmPassword: "", reason: "FOUNDID" }}
               validationSchema={RegisterSchema}
               onSubmit={handleSubmit}
             >

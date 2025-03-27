@@ -35,9 +35,9 @@ export default function Home() {
             <Button variant="outline" size="sm" asChild>
               <Link href="/login">Login</Link>
             </Button>
-            <Button size="sm" asChild>
+            {/* <Button size="sm" asChild>
               <Link href="/register">Register</Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
       </header>

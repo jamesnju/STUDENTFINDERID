@@ -7,6 +7,7 @@ type UserWithRole = User & {
   email: string;
   role?: string;
   name?: string;
+  reason?: string;
 };
 
 export const options: NextAuthOptions = {
@@ -32,6 +33,7 @@ export const options: NextAuthOptions = {
               email: response.user.email,
               role: response.user.role,
               name: response.user.name,
+              reason: response.user.reason,
             } as UserWithRole;
           } else {
             return null;
@@ -57,6 +59,7 @@ export const options: NextAuthOptions = {
         token.email = userWithRole.email;
         token.role = userWithRole.role;
         token.name = userWithRole.name;
+        token.reason = userWithRole.reason;
       }
       //console.log("JWT Token:-----------------", token);
       return token;
@@ -67,6 +70,7 @@ export const options: NextAuthOptions = {
         email: token.email as string,
         role: token.role as string,
         name: token.name as string,
+        reason: token.reason as string,
       };
       //console.log("Session object:-------------------", session);
       return session;
