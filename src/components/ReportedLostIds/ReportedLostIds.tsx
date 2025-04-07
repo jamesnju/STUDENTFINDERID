@@ -3,7 +3,7 @@
 import type React from "react";
 import { useState } from "react";
 import Image from "next/image";
-import { Clipboard, Edit, Filter, Plus, Trash2 } from "lucide-react";
+import { Clipboard, Edit, Filter, Plus, Trash2, Mail } from "lucide-react";
 import {
   postLostId,
   updateLostId,
@@ -47,6 +47,7 @@ export interface UserData {
   description: string;
   reportedAt?: string;
   status: string;
+  email: string;
 }
 interface Payment {
   id: number;
@@ -130,58 +131,6 @@ export default function ReportedFoudIds({
       reader.readAsDataURL(file);
     }
   };
-
-  // Handle form submission (add or update student)
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   // Destructure userId from session; userId is a number.
-  //   const userId = session?.user.id || 0;
-
-  //   // Create FormData for API submission.
-  //   const apiFormData = new FormData();
-  //   apiFormData.append("name", formData.name);
-  //   apiFormData.append("admissionNo", formData.admissionNo);
-  //   apiFormData.append("description", formData.description);
-
-  //   // Append the userId, converted to string since FormData accepts only string or Blob.
-  //   apiFormData.append("userId", userId.toString());
-
-  //   // Only append the image filename if an image is provided.
-  //   if (formData.image) {
-  //     apiFormData.append("image", formData.image);
-  //   }
-
-  //   try {
-  //     if (editingStudent) {
-  //       // Update API for an existing student.
-  //       await updateLostId(Number(editingStudent.id), apiFormData);
-  //       const updatedStudent: UserData = {
-  //         id: editingStudent.id,
-  //         name: formData.name,
-  //         admissionNo: formData.admissionNo,
-  //         description: formData.description,
-  //         // If a new image is uploaded, use its filename; otherwise, retain previous image.
-  //         image: formData.image ? formData.image.name : editingStudent.image,
-  //       };
-  //       setStudents(
-  //         students.map((student) =>
-  //           student.id === editingStudent.id ? updatedStudent : student
-  //         )
-  //       );
-  //       toast.success(`${formData.name} has been updated successfully.`);
-  //     } else {
-  //       // Call the API to add a new student.
-  //       await postLostId(apiFormData);
-  //       toast.success(`${formData.name} has been added successfully.`);
-  //       RevalidatePath("/main/reportLostId");
-  //     }
-
-  //     resetForm();
-  //     setIsModalOpen(false);
-  //   } catch (error) {
-  //     toast.error("There was an error processing your request.");
-  //   }
-  // };
 
   // Reset form data
   const resetForm = () => {
@@ -267,6 +216,32 @@ export default function ReportedFoudIds({
     }
   };
 
+  // Send notification email
+  const sendNotificationEmail = async (email: string) => {
+    try {
+      const response = await fetch(baseUrl + 'notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: email,
+          subject: 'StudentID Found Notification',
+          text: `Your StudentID has been found, please Login to your account for chat ${baseUrl}`,
+          from: 'studentidfinder@gmail.com',
+        }),
+      });
+
+      if (response.ok) {
+        toast.success('Notification email sent successfully.');
+      } else {
+        toast.error('Failed to send notification email.');
+      }
+    } catch (error) {
+      toast.error('An error occurred while sending the notification email.');
+    }
+  };
+
   return (
     <div className="container mx-auto py-6">
       <div className="mb-6 flex items-center justify-between">
@@ -305,6 +280,7 @@ export default function ReportedFoudIds({
               <TableHead>Name</TableHead>
               <TableHead>Reported userId</TableHead>
               <TableHead>Admission No</TableHead>
+              <TableHead>Email</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -324,6 +300,7 @@ export default function ReportedFoudIds({
                 <TableCell className="font-medium">{student.name}</TableCell>
                 <TableCell className="font-medium">{student.userId}</TableCell>
                 <TableCell>{student.admissionNo}</TableCell>
+                <TableCell>{student.email}</TableCell>
                 <TableCell className="max-w-xs truncate">
                   <span
                     className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -361,6 +338,13 @@ export default function ReportedFoudIds({
                     >
                       <Clipboard className="h-4 w-4" />
                       <span className="sr-only">Copy ID</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => sendNotificationEmail(student.email)}
+                    >
+                      <Mail className="h-4 w-4" />
                     </Button>
                   </div>
                 </TableCell>

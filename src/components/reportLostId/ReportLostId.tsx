@@ -37,6 +37,7 @@ export interface UserData {
   userId?: number;
   name: string;
   admissionNo: string;
+  email: string; // Add email field
   image: string;
   status: string;
   reportedAt?: string;
@@ -61,6 +62,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
   const [formData, setFormData] = useState({
     name: "",
     admissionNo: "",
+    email: "", // Add email field
     status: "",
     image: null as File | null,
   });
@@ -78,7 +80,8 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
     return students.filter(
       (student) =>
         student.name.toLowerCase().includes(filter.toLowerCase()) ||
-        student.admissionNo.toLowerCase().includes(filter.toLowerCase())
+        student.admissionNo.toLowerCase().includes(filter.toLowerCase()) ||
+        student.email.toLowerCase().includes(filter.toLowerCase()) // Add email to filter
     );
   }
 
@@ -118,6 +121,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
     const apiFormData = new FormData();
     apiFormData.append("name", formData.name);
     apiFormData.append("admissionNo", formData.admissionNo);
+    apiFormData.append("email", formData.email); // Add email field
     apiFormData.append("status", formData.status);
     apiFormData.append("userId", userId.toString());
 
@@ -151,6 +155,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
     setFormData({
       name: "",
       admissionNo: "",
+      email: "", // Reset email field
       status: "",
       image: null,
     });
@@ -170,6 +175,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
       setFormData({
         name: fetchedStudent.name,
         admissionNo: fetchedStudent.admissionNo,
+        email: fetchedStudent.email, // Set email field
         status: fetchedStudent.status,
         image: null,
       });
@@ -223,7 +229,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
         {isFiltering && (
           <div className="flex-1 px-4">
             <Input
-              placeholder="Filter by name or admission number"
+              placeholder="Filter by name, admission number, or email"
               value={filterValue}
               onChange={(e) => {
                 setFilterValue(e.target.value);
@@ -242,6 +248,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
               <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Admission No</TableHead>
+              <TableHead>Email</TableHead> {/* Add Email column */}
               <TableHead>status</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -260,6 +267,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
                 </TableCell>
                 <TableCell className="font-medium">{student.name}</TableCell>
                 <TableCell>{student.admissionNo}</TableCell>
+                <TableCell>{student.email}</TableCell> {/* Add Email field */}
                 <TableCell className="max-w-xs truncate">
                 <span
                     className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -293,7 +301,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
             ))}
             {getCurrentStudents().length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   No students found.
                 </TableCell>
               </TableRow>
@@ -348,6 +356,7 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
                 <Input
                   id="name"
                   name="name"
+                  placeholder="Enter Full Name"
                   value={formData.name}
                   onChange={handleInputChange}
                   className="col-span-3"
@@ -363,7 +372,22 @@ export default function ReportLostId({ initialStudents }: ReportLostIdProps) {
                   name="admissionNo"
                   value={formData.admissionNo}
                   onChange={handleInputChange}
+                  placeholder="Enter Admission No"
                   className="col-span-3"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="email" className="text-right">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="col-span-3"
+                  placeholder="Please Enter a valid Email"
                   required
                 />
               </div>
