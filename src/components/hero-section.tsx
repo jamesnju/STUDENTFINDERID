@@ -1,9 +1,9 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { FileSearch, Upload, List, ArrowRight } from "lucide-react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import Image from "next/image"
+"use client";
+import { Button } from "@/components/ui/button";
+import { FileSearch, Upload, List, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function HeroSection() {
   return (
@@ -22,7 +22,9 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             Lost Something Important?
-            <span className="text-primary block mt-2">We&apos;ll Help You Find It</span>
+            <span className="text-primary block mt-2">
+              We&apos;ll Help You Find It
+            </span>
           </motion.h1>
           <motion.p
             className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto"
@@ -30,8 +32,9 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            Our platform connects people who have lost items with those who have found them,
-            making the recovery process simple, secure, and stress-free.
+            Our platform connects people who have lost items with those who have
+            found them, making the recovery process simple, secure, and
+            stress-free.
           </motion.p>
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -51,12 +54,12 @@ export function HeroSection() {
                 Report Found Id
               </Link>
             </Button>
-            <Button size="lg" variant="secondary" className="gap-2" asChild>
+            {/* <Button size="lg" variant="secondary" className="gap-2" asChild>
               <Link href="/view-reports">
                 <List className="h-5 w-5" />
                 View Reports
               </Link>
-            </Button>
+            </Button> */}
           </motion.div>
         </motion.div>
 
@@ -95,5 +98,5 @@ export function HeroSection() {
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-primary/10 rounded-full blur-3xl transform -translate-x-1/4 translate-y-1/4"></div>
       </div>
     </div>
-  )
+  );
 }

@@ -56,12 +56,14 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
       const fetchChats = async () => {
         try {
           // In a real app, you would fetch this from your API
-          const response = await fetch(`${baseUrl}usermessages/?userId=${mockCurrentUser.id}`);
+          const response = await fetch(
+            `${baseUrl}usermessages/?userId=${mockCurrentUser.id}`
+          );
           if (response.ok) {
             const data = await response.json();
             // The data is already in the correct format (ChatMessage[])
             setChats(data);
-            RevalidatePath("/main/chats")
+            RevalidatePath("/main/chats");
           }
         } catch (error) {
           console.error("Error fetching chats:", error);
@@ -81,16 +83,24 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
       const handleMarkChatAsRead = (event: CustomEvent) => {
         const { chatId } = event.detail;
         setChats((prevChats) =>
-          prevChats.map((chat) => (chat.chatId === chatId ? { ...chat, hasNewMessages: false } : chat))
+          prevChats.map((chat) =>
+            chat.chatId === chatId ? { ...chat, hasNewMessages: false } : chat
+          )
         );
       };
 
-      window.addEventListener("markChatAsRead", handleMarkChatAsRead as EventListener);
+      window.addEventListener(
+        "markChatAsRead",
+        handleMarkChatAsRead as EventListener
+      );
 
       // Clean up the event listener
       return () => {
         clearInterval(intervalId);
-        window.removeEventListener("markChatAsRead", handleMarkChatAsRead as EventListener);
+        window.removeEventListener(
+          "markChatAsRead",
+          handleMarkChatAsRead as EventListener
+        );
       };
     }
   }, [session]);
@@ -119,7 +129,9 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
 
             // Update each chat with new messages
             messagesByChatId.forEach((messages, chatId) => {
-              const chatIndex = updatedChats.findIndex((chat) => chat.chatId === chatId);
+              const chatIndex = updatedChats.findIndex(
+                (chat) => chat.chatId === chatId
+              );
               if (chatIndex !== -1) {
                 updatedChats[chatIndex] = {
                   ...updatedChats[chatIndex],
@@ -134,7 +146,9 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
 
           // If we have a selected chat, update its messages
           if (selectedChat) {
-            const chatMessages = newMessages.filter((message: ChatMessage) => message.chatId === selectedChat.chatId);
+            const chatMessages = newMessages.filter(
+              (message: ChatMessage) => message.chatId === selectedChat.chatId
+            );
 
             if (chatMessages.length > 0) {
               // Update the messages in the chat window
@@ -181,13 +195,24 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
     );
   }
 
-  if (userRole === "STUDENT" && userReason === "LOSTID" && userPayment?.paymentStatus !== "completed") {
+  if (
+    userRole === "STUDENT" &&
+    userReason === "LOSTID" &&
+    userPayment?.paymentStatus !== "processing" &&
+    userPayment?.paymentStatus !== "completed"
+  ) {
     return (
-      <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: "#FFEBEE", color: "#D32F2F" }}>
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{ backgroundColor: "#FFEBEE", color: "#D32F2F" }}
+      >
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Access Denied</h1>
           <p className="text-lg">Pay KSHS 1 to get access to the chat.</p>
-          <a href="/main/payment" className="mt-6 inline-block bg-primary text-white py-2 px-4 rounded">
+          <a
+            href="/main/payment"
+            className="mt-6 inline-block bg-primary text-white py-2 px-4 rounded"
+          >
             Go to Payment Page
           </a>
         </div>
@@ -200,10 +225,15 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
       <div className="w-80 border-r border-border flex flex-col">
         <div className="p-4 border-b border-border">
           <h1 className="text-xl font-bold">Chats</h1>
-          <p className="text-sm text-muted-foreground">Logged in as {currentUser.name}</p>
+          <p className="text-sm text-muted-foreground">
+            Logged in as {currentUser.name}
+          </p>
         </div>
         <div className="p-4 border-b border-border">
-          <NewChatForm currentUserId={currentUser.id} onChatCreated={handleChatCreated} />
+          <NewChatForm
+            currentUserId={currentUser.id}
+            onChatCreated={handleChatCreated}
+          />
         </div>
         <ChatList
           chats={chats}
@@ -218,8 +248,12 @@ export default function ChatApp({ payments }: { payments: Payment[] }) {
         ) : (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
-              <h2 className="text-xl font-semibold mb-2">Select a chat or start a new conversation</h2>
-              <p className="text-muted-foreground">Choose an existing chat from the sidebar or create a new one</p>
+              <h2 className="text-xl font-semibold mb-2">
+                Select a chat or start a new conversation
+              </h2>
+              <p className="text-muted-foreground">
+                Choose an existing chat from the sidebar or create a new one
+              </p>
             </div>
           </div>
         )}
